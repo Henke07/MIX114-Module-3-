@@ -2,6 +2,7 @@ let map;
 let polygons = [];
 let infoWindow;
 let areas = [];
+let workLocationCoords = null;
 
 /* ==============================
    OMRÅDEDATA
@@ -26,6 +27,42 @@ async function loadAreas() {
             error
         );
     }
+}
+
+async function geocodeWorkLocation(address) {
+
+    const geocoder =
+        new google.maps.Geocoder();
+
+    return new Promise((resolve, reject) => {
+
+        geocoder.geocode(
+            { address: address },
+
+            (results, status) => {
+
+                if (
+                    status === "OK" &&
+                    results[0]
+                ) {
+
+                    const location =
+                        results[0].geometry.location;
+
+                    resolve({
+                        lat: location.lat(),
+                        lng: location.lng()
+                    });
+
+                } else {
+
+                    reject(
+                        "Fant ikke adresse"
+                    );
+                }
+            }
+        );
+    });
 }
 
 /* ==============================
@@ -138,6 +175,40 @@ function applyFilter() {
     });
 }
 
+function calculateDistance(
+    lat1,
+    lng1,
+    lat2,
+    lng2
+) {
+
+    const R = 6371;
+
+    const dLat =
+        (lat2 - lat1) * Math.PI / 180;
+
+    const dLng =
+        (lng2 - lng1) * Math.PI / 180;
+
+    const a =
+        Math.sin(dLat / 2) *
+        Math.sin(dLat / 2) +
+
+        Math.cos(lat1 * Math.PI / 180) *
+        Math.cos(lat2 * Math.PI / 180) *
+
+        Math.sin(dLng / 2) *
+        Math.sin(dLng / 2);
+
+    const c =
+        2 * Math.atan2(
+            Math.sqrt(a),
+            Math.sqrt(1 - a)
+        );
+
+    return R * c;
+}
+
 /* ==============================
    SCORE SYSTEM
 ============================== */
@@ -171,6 +242,23 @@ function calculateScore(area, filters) {
                 break;
         }
     });
+
+    if(workLocationCoords) {
+
+    const distance =
+        calculateDistance(
+            workLocationCoords.lat,
+            workLocationCoords.lng,
+            area.center.lat,
+            area.center.lng
+        );
+
+    // Kortere avstand = høyere score
+    score += Math.max(
+        0,
+        15 - distance
+    );
+}
 
     return score;
 }
@@ -260,7 +348,48 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (searchButton) {
 
-        searchButton.addEventListener("click", () => {
+        searchButton.addEventListener("click",
+            async () => {
+                const input =
+            document.getElementById(
+                "work-location"
+            );
+
+        const address = input.value;
+
+        if(address) {
+
+            try {
+
+                workLocationCoords =
+                    await geocodeWorkLocation(
+                        address
+                    );
+
+                console.log(
+                    "Arbeidssted:",
+                    workLocationCoords
+                );
+
+                new google.maps.Marker({
+                    position: workLocationCoords,
+                    map: map,
+                    title: "Arbeidssted"
+                });
+
+                map.panTo(workLocationCoords);
+
+                map.setZoom(13);
+
+            } catch(error) {
+
+                alert(
+                    "Fant ikke arbeidssted"
+                );
+
+                return;
+            }
+        }
             applyFilter();
         });
     }
