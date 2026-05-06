@@ -4,7 +4,7 @@ let infoWindow;
 let areas = [];
 
 /* ==============================
-   OMRÅDEDATA
+    OMRÅDEDATA
 ============================== */
 
 async function loadAreas() {
@@ -29,7 +29,7 @@ async function loadAreas() {
 }
 
 /* ==============================
-   INIT MAP
+    INIT MAP
 ============================== */
 
 window.initMap = async function () {
@@ -53,7 +53,7 @@ window.initMap = async function () {
 };
 
 /* ==============================
-   TEGN OMRÅDER
+    TEGN OMRÅDER
 ============================== */
 
 function drawAreas(colorFunc) {
@@ -89,7 +89,7 @@ function drawAreas(colorFunc) {
 }
 
 /* ==============================
-   FILTER
+    FILTER
 ============================== */
 
 function applyFilter() {
@@ -139,7 +139,7 @@ function applyFilter() {
 }
 
 /* ==============================
-   SCORE SYSTEM
+    SCORE SYSTEM
 ============================== */
 
 function calculateScore(area, filters) {
@@ -176,7 +176,7 @@ function calculateScore(area, filters) {
 }
 
 /* ==============================
-   INFO WINDOW
+    INFO WINDOW
 ============================== */
 
 function showInfo(area, position) {
@@ -206,7 +206,7 @@ function showInfo(area, position) {
 }
 
 /* ==============================
-   AUTOMATISK BESKRIVELSE
+    AUTOMATISK BESKRIVELSE
 ============================== */
 
 function generateSummary(area) {
@@ -236,7 +236,7 @@ function generateSummary(area) {
 }
 
 /* ==============================
-   EVENTS
+    EVENTS
 ============================== */
 
 document.addEventListener("DOMContentLoaded", () => {
