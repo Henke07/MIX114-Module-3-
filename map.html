@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Map filter</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="map-page">
+
+    <!--Header til alle sidene-->
+    <header class="site-header" role="banner">
+        <div class="header-content">
+            <a href="index.html" class="logo" aria-label="Reisevei — gå til forsiden">
+                <span class="logo-icon" aria-hidden="true">🏘️</span>
+                <span class="logo-text">Reisevei</span>
+            </a>
+
+            <nav class="main-nav" aria-label="Hovednavigasjon">
+                <button type="button" class="header-search-button" id="header-search-button">
+                    <span class="header-search-text">Søk</span>
+                </button>
+                <button type="button" class="header-profile-button" id="header-profile-button" aria-label="Min profil">
+                    <span class="header-profile-icon" aria-hidden="true">👤</span>
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <main id="main-content">
+
+        <div class="map-layout">
+
+        <aside class="container-filter" aria-label="Filter">
+
+            <h1 class="filter-title">Filter</h1>
+
+            <!-- Arbeidssted -->
+            <div class="container-arbeidssted">
+                <input
+                    type="text"
+                    class="input input--container--color"
+                    placeholder="Legg inn arbeidssted"
+                    aria-label="Legg inn arbeidssted"
+                />
+            </div>
+
+            <!-- Fremkomstmiddel -->
+            <div>
+                <p class="filter-label">Velg ditt fremkomstmiddel</p>
+                <div class="container-options">
+                    <button type="button" class="fremkomst-icon" aria-label="Buss">
+                        <span aria-hidden="true">Buss</span>
+                    </button>
+                    <button type="button" class="fremkomst-icon" aria-label="Bil">
+                        <span aria-hidden="true">Bil</span>
+                    </button>
+                    <button type="button" class="fremkomst-icon" aria-label="Gange">
+                        <span aria-hidden="true">Gå</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Reisevei -->
+            <div class="container-reisevei">
+                <div>
+                    <p class="filter-label">Reisevei</p>
+                    <select class="input input--container--color" aria-label="Maks reisetid">
+                        <option value="" disabled selected>Maks tid fra hjem til jobb</option>
+                        <option value="15">15 minutter</option>
+                        <option value="30">30 minutter</option>
+                        <option value="45">45 minutter</option>
+                        <option value="60">60 minutter</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Budsjett -->
+            <div class="container-budsjett">
+                <p class="filter-label">Budsjett</p>
+                <div class="budjsett-rekke">
+                    <input
+                        type="number"
+                        class="input input--container--color"
+                        placeholder="Min pris"
+                        aria-label="Minimumspris"
+                    />
+                    <span class="budget-separator" aria-hidden="true">–</span>
+                    <input
+                        type="number"
+                        class="input input--container--color"
+                        placeholder="Max pris"
+                        aria-label="Maksimumspris"
+                    />
+                </div>
+            </div>
+
+            <!-- Fasiliteter -->
+            <div>
+                <p class="filter-label">Hva er viktig for deg å ha i nærheten?</p>
+                <div class="checkbox-group">
+                    <label class="checkbox-label">
+                        <input type="checkbox" name="fasiliteter" value="barnehage"> Barnehage
+                    </label>
+                    <label class="checkbox-label">
+                        <input type="checkbox" name="fasiliteter" value="skole"> Skole
+                    </label>
+                    <label class="checkbox-label">
+                        <input type="checkbox" name="fasiliteter" value="apotek"> Apotek
+                    </label>
+                    <label class="checkbox-label">
+                        <input type="checkbox" name="fasiliteter" value="kollektiv"> Kollektiv transport
+                    </label>
+                    <label class="checkbox-label">
+                        <input type="checkbox" name="fasiliteter" value="matbutikk"> Matbutikk
+                    </label>
+                </div>
+            </div>
+
+            <!-- Buttons -->
+            <div class="button-row">
+                <button type="submit" class="btn btn--primary">Søk</button>
+                <button type="reset" class="btn btn--secondary">Nullstill filter</button>
+            </div>
+
+        </aside>
+
+        <section class="map-section" aria-label="Kart">
+            <div id="map"></div>
+
+            <section class="best-matches">
+                <div class="best-matches-header">
+                    <h2>Dine beste matcher er:</h2>
+                    <p>Trykk på + ikonet for å legge til i sammenligning · Viser 3 av 12 områder</p>
+                </div>
+                <div class="best-matches-card">
+                    <!-- NB! Fyll inn et bilde fra bydelen her-->
+                    <div class="best-matches-card-img">
+                        <img src="" alt="Bilde av Nordnes">
+                    </div>
+
+                    <div class="best-matches-card-content">
+                        <div class="card-content-title">
+                            <h3>Nordnes</h3>
+                            <div class="card-content-title-details">
+                                <span>🏷 5.2M NOK</span>
+                                <span>🕐 15 min</span>
+                            </div>
+                        </div>
+                        <div class="card-content-attriubutes">
+                            <div class="attributes-pros">
+                                <div class="attributes-pros-title">Fordeler</div>
+                                <ul class="attributes-pros-list">
+                                    <li>Rolig nabolag</li>
+                                    <li>Utsikt</li>
+                                    <li>Svært sentrumsnært</li>
+                                </ul>
+                            </div>
+                            <div class="attributes-cons">
+                                <div class="attributes-cons-title">Ulemper</div>
+                                <ul class="attributes-cons-list">
+                                    <li>Lite kollektiv muligheter</li>
+                                    <li>Dyr parkering</li>
+                                    <li>Én barnehage</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="best-matches-card-buttons">
+                        <div class="card-btn-group">
+                            <button class="card-btn-add" aria-label="Legg til i sammenligning">+</button>
+                            <span class="card-btn-label">Legg til</span>
+                        </div>
+                        <button class="card-btn-heart" aria-label="Lagre">♡</button>
+                        <div class="card-match-badge">
+                            <span class="card-match-percentage">78%</span>
+                            <span>Match</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </section>
+
+        </div>
+
+    </main>
+
+    <!--Felles footer-->
+    <footer class="site-footer" role="contentinfo">
+        <div class="footer-content">
+            <ul class="footer-links" role="list">
+                <li class="footer-link-item"><a href="#about" class="footer-link">Om oss</a></li>
+                <li class="footer-link-item"><a href="#contact" class="footer-link">Kontakt oss</a></li>
+                <li class="footer-link-item"><a href="#privacy" class="footer-link">Personvern</a></li>
+            </ul>
+            <a href="index.html" class="footer-logo">
+                <span class="footer-logo-mark" aria-hidden="true">🏘️</span>
+                <span class="footer-logo-text">Reisevei</span>
+            </a>
+        </div>
+    </footer>
+    
+    <script src="script.js"></script>
+    <script async
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBFkMoWM4aP5EWSQ1Q2AjPfZwws7PoQ4G0&callback=initMap">
+    </script>
+</body>
+</html>
