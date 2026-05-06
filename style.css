@@ -491,21 +491,35 @@ body {
 }
 
 /* Filter fremkomstmiddel */
-.container-options{
+.container-options {
     display: flex;
     gap: var(--space-lg);
 }
 
-.fremkomst-icon{
+.fremkomst-icon {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 14px 20px;
+    min-width: 80px;
     border-radius: var(--radius-xl);
+    border: 1.5px solid var(--color-borders);
     background-color: var(--color-white);
-    stroke: var(--color-borders);
     color: var(--color-black);
+    font-size: 0.9rem;
+    cursor: pointer;
     transition: background-color 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
 }
-.fremkomst-icon:hover{
-    background-color: var(--color-primary-light-40);
 
+.fremkomst-icon img {
+    width: 28px;
+    height: 28px;
+}
+
+.fremkomst-icon:hover {
+    background-color: var(--color-primary-light-40);
 }
 
 /* MÅ lage en aktiv trykket knapp, denne holder ikke så lenge når den blir trykket på */
