@@ -22,7 +22,7 @@ async function loadAreas() {
     }
 }
 
-//Display av data for sammenligning
+//Fyller dropdowns med områder fra API
 
 function populateDropdown() {
     const areaOne = document.getElementById("area-one");
@@ -41,4 +41,37 @@ function populateDropdown() {
         areaOne.appendChild(option1);
         areaTwo.appendChild(option2);
     });
+}
+
+//Registrerer når sammenligningsknapp trykkes
+document
+    .getElementById("compare-btn")
+    .addEventListener("click", handleCompare);
+
+//Håndterer sammenligning
+function handleCompare() {
+
+    const areaOneValue =
+        document.getElementById("area-one").value;
+
+    const areaTwoValue =
+        document.getElementById("area-two").value;
+
+    //validerer at begge områder er valgt
+    if (!areaOneValue || !areaTwoValue) {
+        alert("Velg to områder");
+
+        return;
+    }
+
+    //finner samsvarende områder fra API
+    const areaOne = areas.find(
+        area => area.name === areaOneValue
+    );
+
+    const areaTwo = areas.find(
+        area => area.name === areaTwoValue
+    );
+
+    renderComparison(areaOne, areaTwo);
 }
