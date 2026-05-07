@@ -24,6 +24,21 @@ async function loadAreas() {
 
 //Display av data for sammenligning
 
-function displayComparisonData() {
+function populateDropdown() {
+    const areaOne = document.getElementById("area-one");
+    const areaTwo = document.getElementById("area-two");
 
+    areas.forEach(area => {
+
+        const option1 = document.createElement("option");
+        option1.value = area.name;
+        option1.textContent = area.name;
+
+        const option2 = document.createElement("option");
+        option2.value = area.name;
+        option2.textContent = area.name;
+
+        areaOne.appendChild(option1);
+        areaTwo.appendChild(option2);
+    });
 }
