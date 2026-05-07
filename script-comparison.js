@@ -75,3 +75,52 @@ function handleCompare() {
 
     renderComparison(areaOne, areaTwo);
 }
+
+//Fyller card med data
+
+function populateAreaCard(card, area) {
+
+    card.querySelector("[data-name]").textContent =
+        area.name;
+
+    card.querySelector("[data-cost]").textContent =
+        area.data.price + "/10";
+
+    card.querySelector("[data-time]").textContent =
+        area.data.commuteCityCenter + " min";
+
+    // pros
+    const prosList =
+        card.querySelector("[data-pros");
+
+    prosList.innerHTML = "";
+
+    area.summary.pros.forEach(pro => {
+
+        const li = document.createElement("li");
+
+        li.textContent = pro;
+
+        prosList.appendChild(li);
+    });
+
+    // cons
+    const consList =
+        card.querySelector("[data-cons]");
+
+    consList.innerHTML = "";
+
+    area.summary.cons.forEach(con => {
+
+        const li = document.createElement("li");
+
+        li.textContent = con;
+
+        consList.appendChild(li);
+    });
+
+    // chart
+    const chartContainer =
+        card.querySelector("[data-chart]");
+
+    renderAreaChart(chartContainer, area);
