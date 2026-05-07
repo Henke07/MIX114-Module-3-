@@ -124,3 +124,5 @@ function populateAreaCard(card, area) {
         card.querySelector("[data-chart]");
 
     renderAreaChart(chartContainer, area);
+
+    //Hvis noen vil fortsette: mangler rendering av comparison chart, altså å generere highcharts og sette de inn i riktige områder i html
