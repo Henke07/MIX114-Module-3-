@@ -4,6 +4,11 @@ let infoWindow;
 let areas = [];
 let workLocationCoords = null;
 
+let selectedTransport = "car";
+let maxTravelTime = null;
+let minPrice = null;
+let maxPrice = null;
+
 /* ==============================
    OMRÅDEDATA
 ============================== */
@@ -93,13 +98,15 @@ window.initMap = async function () {
    TEGN OMRÅDER
 ============================== */
 
-function drawAreas(colorFunc) {
-
+function drawAreas(colorFunc, inputareas = null) {
+    if (!inputareas) {
+        inputareas = areas;
+    }
     // Fjern gamle polygoner
     polygons.forEach(polygon => polygon.setMap(null));
     polygons = [];
 
-    areas.forEach(area => {
+    inputareas.forEach(area => {
 
         const polygon = new google.maps.Polygon({
             paths: area.coords,
@@ -126,16 +133,221 @@ function drawAreas(colorFunc) {
 }
 
 /* ==============================
+   Finne reisetid mellom jobb og områder
+============================== */
+
+async function getTravelTimes(
+    originLat,
+    originLng,
+    destinationLat,
+    destinationLng
+) {
+    const endpoint =
+        "https://routes.googleapis.com/distanceMatrix/v2:computeRouteMatrix";
+
+    const modes = {
+        car: "DRIVE",
+        transit: "TRANSIT",
+        walk: "WALK"
+    };
+
+    const results = {};
+
+    // Neste mandag kl 09:00
+    const transitDepartureTime = getNextMondayAt9AM();
+
+    for (const [label, travelMode] of Object.entries(modes)) {
+        const body = {
+            origins: [
+                {
+                    waypoint: {
+                        location: {
+                            latLng: {
+                                latitude: originLat,
+                                longitude: originLng
+                            }
+                        }
+                    }
+                }
+            ],
+            destinations: [
+                {
+                    waypoint: {
+                        location: {
+                            latLng: {
+                                latitude: destinationLat,
+                                longitude: destinationLng
+                            }
+                        }
+                    }
+                }
+            ],
+            travelMode,
+            languageCode: "no"
+        };
+
+        // Transit krever departureTime
+        if (travelMode === "TRANSIT") {
+            body.departureTime = transitDepartureTime;
+        }
+
+        // Trafikk-aware routing for bil
+        if (travelMode === "DRIVE") {
+            body.routingPreference = "TRAFFIC_AWARE";
+            body.departureTime = new Date(
+                Date.now() + 2 * 60 * 1000
+            ).toISOString();
+        }
+
+        const response = await fetch(endpoint, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "X-Goog-Api-Key": "AIzaSyBFkMoWM4aP5EWSQ1Q2AjPfZwws7PoQ4G0",
+                "X-Goog-FieldMask":
+                    "originIndex,destinationIndex,duration,distanceMeters,status"
+            },
+            body: JSON.stringify(body)
+        });
+
+        if (!response.ok) {
+            throw new Error(
+                `Google API error (${travelMode}): ${response.status}`
+            );
+        }
+        const route = (await response.json())[0];
+        const durationSeconds = parseDuration(route.duration);
+
+        results[label] = {
+            seconds: durationSeconds,
+            minutes: Math.round(durationSeconds / 60),
+            distanceMeters: route.distanceMeters,
+            readable: formatDuration(durationSeconds)
+        };
+    }
+
+    return results;
+}
+
+function getNextMondayAt9AM() {
+    const now = new Date();
+
+    // Start med dagens dato
+    const result = new Date(now);
+
+    const currentDay = result.getDay();
+
+    // Finn dager til neste mandag
+    let daysUntilMonday = (8 - currentDay) % 7;
+
+    // ALLTID neste mandag
+    if (daysUntilMonday === 0) {
+        daysUntilMonday = 7;
+    }
+
+    result.setDate(result.getDate() + daysUntilMonday);
+
+    // Sett lokal tid 09:00
+    result.setHours(9, 0, 0, 0);
+
+    return result.toISOString();
+}
+
+function parseDuration(durationString) {
+    return Number(durationString.replace("s", ""));
+}
+
+function formatDuration(seconds) {
+    const hours = Math.floor(seconds / 3600);
+    const minutes = Math.round((seconds % 3600) / 60);
+
+    if (hours > 0) {
+        return `${hours} t ${minutes} min`;
+    }
+
+    return `${minutes} min`;
+}
+
+/* ==============================
    FILTER
 ============================== */
 
-function applyFilter() {
+async function applyFilter(workLocationCoords) {
+    // filters:
+    // 1. Reisetif
+    // 2. Budsjett
+    // 3. Nærhet til X
+
 
     const checkboxes = document.querySelectorAll(
         'input[name="fasiliteter"]:checked'
     );
 
+    // Finne reisetider for alle areas
+
+    let filteredAreas = [];
+    for (let area in areas) {
+        const areaData = areas[area];
+        const areaDistance = await getTravelTimes(areaData.center.lat, areaData.center.lng, workLocationCoords.lat, workLocationCoords.lng);
+        filteredAreas.push([areaData, areaDistance]);
+    }
+    console.log("areaswithdistance", filteredAreas);
+
+
+    // finne valgt max reisetid dersom den er valgt
+    const maxReisetidSelect = document.getElementById("max-reisetid");
+    const maxTravelTime = Number(maxReisetidSelect.value);
+    const selectedTransport = document.querySelector(
+        'input[name="transport"]:checked'
+    )?.value;
+    if (maxTravelTime && selectedTransport) {
+        console.log("selectedMode", selectedTransport)
+        console.log("maxtime", maxTravelTime)
+        // Get selected travel mode from
+        filteredAreas = filteredAreas.filter(a => {
+            const travelTimes = a[1];
+            if (selectedTransport == "buss") {
+                const bussResult = maxTravelTime >= travelTimes.transit.minutes;
+                console.log(a[0].name, "buss", travelTimes.transit, bussResult);
+                return bussResult;
+            }
+            if (selectedTransport == "bil") {
+                const bilResult = maxTravelTime >= travelTimes.car.minutes;
+                console.log(a[0].name, "bil", travelTimes.car, bilResult);
+                return bilResult;
+            }
+            if (selectedTransport == "gå") {
+                const walkResult = maxTravelTime >= travelTimes.walk.minutes;
+                console.log(a[0].name, "gå", travelTimes.walk, walkResult);
+                return walkResult;
+            }
+
+        })
+    }
+    console.log("filteredDistenace", filteredAreas);
+
+
+    // hent max / min pris
+    const min = Number(
+        document.getElementById("min-price").value
+    );
+
+    const max = Number(
+        document.getElementById("max-price").value
+    );
+    console.log("maxmin", min, max)
+    // getbyid value for max / min
+    if (max && min) {
+        filteredAreas = filteredAreas.filter(a => {
+            const areaInfo = a[0];
+            const price = areaInfo.data.priceValue;
+            return (min <= price && max >= price)
+        })
+    }
+    console.log("filteredbypriceanddisance", filteredAreas);
     const filters = Array.from(checkboxes).map(cb => cb.value);
+
+    console.log("filters", filters)
 
     // Ingen filter valgt
     if (filters.length === 0) {
@@ -149,7 +361,7 @@ function applyFilter() {
     let bestScore = -1;
 
     // Finn beste score
-    areas.forEach(area => {
+    filteredAreas.map(a => a[0]).forEach(area => {
 
         const score = calculateScore(area, filters);
 
@@ -172,7 +384,7 @@ function applyFilter() {
         }
 
         return "#F4665B"; // rød
-    });
+    }, filteredAreas.map(a => a[0]));
 }
 
 function calculateDistance(
@@ -217,6 +429,21 @@ function calculateScore(area, filters) {
 
     let score = 0;
 
+    // Prisfilter
+    if (
+        minPrice &&
+        area.data.priceValue < minPrice
+    ) {
+        return -999;
+    }
+
+    if (
+        maxPrice &&
+        area.data.priceValue > maxPrice
+    ) {
+        return -999;
+    }
+
     filters.forEach(filter => {
 
         switch (filter) {
@@ -242,23 +469,48 @@ function calculateScore(area, filters) {
                 break;
         }
     });
+    if (workLocationCoords) {
 
-    if(workLocationCoords) {
+        const distance =
+            calculateDistance(
+                workLocationCoords.lat,
+                workLocationCoords.lng,
+                area.center.lat,
+                area.center.lng
+            );
 
-    const distance =
-        calculateDistance(
-            workLocationCoords.lat,
-            workLocationCoords.lng,
-            area.center.lat,
-            area.center.lng
+        let multiplier = 1;
+
+        switch (selectedTransport) {
+
+            case "gå":
+                multiplier = 12;
+                break;
+
+            case "buss":
+                multiplier = 3;
+                break;
+
+            case "bil":
+                multiplier = 1.5;
+                break;
+        }
+
+        const estimatedMinutes =
+            distance * multiplier;
+
+        if (
+            maxTravelTime &&
+            estimatedMinutes > maxTravelTime
+        ) {
+            return -999;
+        }
+
+        score += Math.max(
+            0,
+            30 - estimatedMinutes
         );
-
-    // Kortere avstand = høyere score
-    score += Math.max(
-        0,
-        15 - distance
-    );
-}
+    }
 
     return score;
 }
@@ -329,6 +581,22 @@ function generateSummary(area) {
 
 document.addEventListener("DOMContentLoaded", () => {
 
+    const transportButtons =
+        document.querySelectorAll(
+            ".fremkomst-icon"
+        );
+
+    transportButtons.forEach(button => {
+
+        button.addEventListener("click", () => {
+
+            selectedTransport =
+                button.dataset.transport;
+
+            console.log(selectedTransport);
+        });
+    });
+
     // Checkbox-filter
     const checkboxes = document.querySelectorAll(
         'input[name="fasiliteter"]'
@@ -337,7 +605,7 @@ document.addEventListener("DOMContentLoaded", () => {
     checkboxes.forEach(checkbox => {
 
         checkbox.addEventListener("change", () => {
-            applyFilter();
+            //applyFilter();
         });
     });
 
@@ -348,50 +616,73 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (searchButton) {
 
-        searchButton.addEventListener("click",
+        searchButton.addEventListener(
+            "click",
+
             async () => {
+
                 const input =
-            document.getElementById(
-                "work-location"
-            );
-
-        const address = input.value;
-
-        if(address) {
-
-            try {
-
-                workLocationCoords =
-                    await geocodeWorkLocation(
-                        address
+                    document.getElementById(
+                        "work-location"
                     );
 
-                console.log(
-                    "Arbeidssted:",
-                    workLocationCoords
+                const address = input.value;
+
+                maxTravelTime = Number(
+                    document.querySelector("select").value
                 );
 
-                new google.maps.Marker({
-                    position: workLocationCoords,
-                    map: map,
-                    title: "Arbeidssted"
-                });
-
-                map.panTo(workLocationCoords);
-
-                map.setZoom(13);
-
-            } catch(error) {
-
-                alert(
-                    "Fant ikke arbeidssted"
+                minPrice = Number(
+                    document.querySelector(
+                        'input[placeholder="Min pris"]'
+                    ).value
                 );
 
-                return;
+                maxPrice = Number(
+                    document.querySelector(
+                        'input[placeholder="Max pris"]'
+                    ).value
+                );
+
+                if (address) {
+
+                    try {
+
+                        workLocationCoords =
+                            await geocodeWorkLocation(
+                                address
+                            );
+
+                        console.log(
+                            "Arbeidssted:",
+                            workLocationCoords
+                        );
+
+                        new google.maps.Marker({
+                            position: workLocationCoords,
+                            map: map,
+                            title: "Arbeidssted"
+                        });
+
+                        map.panTo(workLocationCoords);
+
+                        map.setZoom(13);
+
+                        await applyFilter(workLocationCoords);
+
+                    } catch (error) {
+
+                        console.log(error);
+                        alert(
+                            "Fant ikke arbeidssted"
+                        );
+
+                        return;
+                    }
+                }
+
             }
-        }
-            applyFilter();
-        });
+        );
     }
 
     // Nullstill filter
