@@ -128,4 +128,72 @@ function populateAreaCard(card, area) {
 
     //Hvis noen vil fortsette: mangler rendering av comparison chart, altså å generere highcharts og sette de inn i riktige områder i html
 
-    
+function renderComparisonChart(areaOne, areaTwo) {
+
+    Highcharts.chart("comparison-chart", {
+
+        chart: {
+            polar: true,
+            type: "line"
+        },
+
+        title: {
+            text: "Områdesammenligning"
+        },
+
+        pane: {
+            size: "80%"
+        },
+
+        xAxis: {
+
+            categories: [
+                "Butikker",
+                "Natur",
+                "Sikkerhet",
+                "Transport",
+                "Uteliv",
+                "Familievennlig"
+            ],
+
+            tickmarkPlacement: "on",
+            lineWidth: 0
+        },
+
+        yAxis: {
+            min: 0,
+            max: 10
+        },
+
+        series: [
+
+            {
+                name: areaOne.name,
+
+                data: [
+                    areaOne.data.shop,
+                    areaOne.data.nature,
+                    areaOne.data.safety,
+                    areaOne.data.transport,
+                    areaOne.data.nightlife,
+                    areaOne.data.familyFriendly
+                ]
+            },
+
+            {
+                name: areaTwo.name,
+
+                data: [
+                    areaTwo.data.shop,
+                    areaTwo.data.nature,
+                    areaTwo.data.safety,
+                    areaTwo.data.transport,
+                    areaTwo.data.nightlife,
+                    areaTwo.data.familyFriendly
+                ]
+            }
+        ]
+    });
+}
+
+loadAreas();
