@@ -92,7 +92,12 @@ function renderComparison(areaOne, areaTwo) {
     const compareGrid =
         document.getElementById("compare-grid");
 
-    compareGrid.innerHTML = "";
+    const oldCards =
+        compareGrid.querySelectorAll(
+            ".compare-column:not(#area-template)"
+        );
+
+    oldCards.forEach(card => card.remove());
 
     const template =
         document.getElementById("area-template");
@@ -157,8 +162,6 @@ function populateAreaCard(card, area) {
         consList.appendChild(li);
     });
 }
-
-    //Hvis noen vil fortsette: mangler rendering av comparison chart, altså å generere highcharts og sette de inn i riktige områder i html
 
 function renderComparisonChart(areaOne, areaTwo) {
 
