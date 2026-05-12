@@ -123,14 +123,21 @@ function renderComparison(areaOne, areaTwo) {
 
 function populateAreaCard(card, area) {
 
+    // navn
     card.querySelector("[data-name]").textContent =
         area.name;
 
+    // pris
     card.querySelector("[data-cost]").textContent =
         area.data.price + "/10";
 
+    // reisetid
     card.querySelector("[data-time]").textContent =
         area.data.commuteCityCenter + " min";
+
+    // total reisetid
+    card.querySelector("[data-total-time]").textContent =
+        area.data.commuteCityCenter + " minutter";
 
     // pros
     const prosList =
@@ -140,7 +147,8 @@ function populateAreaCard(card, area) {
 
     area.summary.pros.forEach(pro => {
 
-        const li = document.createElement("li");
+        const li =
+            document.createElement("li");
 
         li.textContent = pro;
 
@@ -155,12 +163,26 @@ function populateAreaCard(card, area) {
 
     area.summary.cons.forEach(con => {
 
-        const li = document.createElement("li");
+        const li =
+            document.createElement("li");
 
         li.textContent = con;
 
         consList.appendChild(li);
     });
+
+    // chart container
+    const chartContainer =
+        card.querySelector("[data-chart]");
+
+    // unik id til chart
+    const chartId =
+        "chart-" +
+        area.name.replaceAll(" ", "-");
+
+    chartContainer.id = chartId;
+
+    renderAreaChart(chartId, area);
 }
 
 function renderComparisonChart(areaOne, areaTwo) {
