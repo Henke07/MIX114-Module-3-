@@ -185,6 +185,78 @@ function populateAreaCard(card, area) {
     renderAreaChart(chartId, area);
 }
 
+function renderAreaChart(chartId, area) {
+
+    Highcharts.chart(chartId, {
+
+        chart: {
+            polar: true,
+            type: "line"
+        },
+
+        title: {
+            text: area.name
+        },
+
+        pane: {
+            size: "80%"
+        },
+
+        xAxis: {
+
+            categories: [
+                "Butikker",
+                "Natur",
+                "Sikkerhet",
+                "Transport",
+                "Uteliv",
+                "Skole",
+                "Familie",
+                "Parkering"
+            ],
+
+            tickmarkPlacement: "on",
+
+            lineWidth: 0
+        },
+
+        yAxis: {
+
+            gridLineInterpolation: "polygon",
+
+            min: 0,
+
+            max: 10
+        },
+
+        tooltip: {
+
+            pointFormat:
+                "<b>{point.y}/10</b>"
+        },
+
+        series: [
+
+            {
+                name: area.name,
+
+                data: [
+                    area.data.shop,
+                    area.data.nature,
+                    area.data.safety,
+                    area.data.transport,
+                    area.data.nightlife,
+                    area.data.school,
+                    area.data.familyFriendly,
+                    area.data.parking
+                ],
+
+                pointPlacement: "on"
+            }
+        ]
+    });
+}
+
 function renderComparisonChart(areaOne, areaTwo) {
 
     Highcharts.chart("comparison-chart", {
