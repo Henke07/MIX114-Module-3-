@@ -1,4 +1,13 @@
+init()
+
 let areas = [];
+
+async function init() {
+
+    await loadAreas();
+
+    populateDropdown();
+}
 
 //Laster områdedata
 async function loadAreas() {
@@ -91,7 +100,7 @@ function populateAreaCard(card, area) {
 
     // pros
     const prosList =
-        card.querySelector("[data-pros");
+        card.querySelector("[data-pros]");
 
     prosList.innerHTML = "";
 
@@ -195,5 +204,3 @@ function renderComparisonChart(areaOne, areaTwo) {
         ]
     });
 }
-
-loadAreas();
