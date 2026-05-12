@@ -85,6 +85,34 @@ function handleCompare() {
     renderComparison(areaOne, areaTwo);
 }
 
+//Rendrer sammenligningen av områdene
+function renderComparison(areaOne, areaTwo) {
+
+    const compareGrid =
+        document.getElementById("compare-grid");
+
+    compareGrid.innerHTML = "";
+
+    const template =
+        document.getElementById("area-template");
+
+    [areaOne, areaTwo].forEach(area => {
+
+        const clone =
+            template.cloneNode(true);
+
+        clone.style.display = "block";
+
+        clone.removeAttribute("id");
+
+        populateAreaCard(clone, area);
+
+        compareGrid.appendChild(clone);
+    });
+
+    renderComparisonChart(areaOne, areaTwo);
+}
+
 //Fyller card med data
 
 function populateAreaCard(card, area) {
