@@ -1,5 +1,3 @@
-init()
-
 let areas = [];
 
 async function init() {
@@ -347,3 +345,8 @@ function renderComparisonChart(areaOne, areaTwo) {
         ]
     });
 }
+
+document.addEventListener(
+    "DOMContentLoaded",
+    init
+);
