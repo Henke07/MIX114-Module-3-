@@ -282,16 +282,31 @@ function renderComparisonChart(areaOne, areaTwo) {
                 "Sikkerhet",
                 "Transport",
                 "Uteliv",
-                "Familievennlig"
+                "Skole",
+                "Familie",
+                "Parkering"
             ],
 
             tickmarkPlacement: "on",
+
             lineWidth: 0
         },
 
         yAxis: {
+
+            gridLineInterpolation: "polygon",
+
             min: 0,
+
             max: 10
+        },
+
+        tooltip: {
+
+            shared: true,
+
+            pointFormat:
+                "<b>{series.name}: {point.y}/10</b><br>"
         },
 
         series: [
@@ -305,8 +320,12 @@ function renderComparisonChart(areaOne, areaTwo) {
                     areaOne.data.safety,
                     areaOne.data.transport,
                     areaOne.data.nightlife,
-                    areaOne.data.familyFriendly
-                ]
+                    areaOne.data.school,
+                    areaOne.data.familyFriendly,
+                    areaOne.data.parking
+                ],
+
+                pointPlacement: "on"
             },
 
             {
@@ -318,8 +337,12 @@ function renderComparisonChart(areaOne, areaTwo) {
                     areaTwo.data.safety,
                     areaTwo.data.transport,
                     areaTwo.data.nightlife,
-                    areaTwo.data.familyFriendly
-                ]
+                    areaTwo.data.school,
+                    areaTwo.data.familyFriendly,
+                    areaTwo.data.parking
+                ],
+
+                pointPlacement: "on"
             }
         ]
     });
