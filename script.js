@@ -164,6 +164,66 @@ Svar KUN med et JSON-array i dette formatet, ingen annen tekst:
 }
 
 /* ==============================
+   RENDER RESULTS
+============================== */
+
+function renderResults(results) {
+
+    const container = document.querySelector(".best-matches");
+
+    container.innerHTML = `
+        <div class="best-matches-header">
+            <h2>Dine beste matcher er:</h2>
+            <p>Viser ${results.length} områder</p>
+        </div>
+        ${results.map(area => `
+            <div class="best-matches-card">
+
+                <div class="best-matches-card-img">
+                    <img src="" alt="Bilde av ${area.name}">
+                </div>
+
+                <div class="best-matches-card-content">
+                    <div class="card-content-title">
+                        <h3>${area.name}</h3>
+                    </div>
+
+                    <p>${area.summary}</p>
+
+                    <div class="card-content-attriubutes">
+                        <div class="attributes-pros">
+                            <div class="attributes-pros-title">Fordeler</div>
+                            <ul class="attributes-pros-list">
+                                ${area.pros.map(p => `<li>${p}</li>`).join("")}
+                            </ul>
+                        </div>
+                        <div class="attributes-cons">
+                            <div class="attributes-cons-title">Ulemper</div>
+                            <ul class="attributes-cons-list">
+                                ${area.cons.map(c => `<li>${c}</li>`).join("")}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="best-matches-card-buttons">
+                    <div class="card-btn-group">
+                        <button class="card-btn-add" aria-label="Legg til i sammenligning">+</button>
+                        <span class="card-btn-label">Legg til</span>
+                    </div>
+                    <button class="card-btn-heart" aria-label="Lagre">♡</button>
+                    <div class="card-match-badge">
+                        <span class="card-match-percentage">${area.score}%</span>
+                        <span>Match</span>
+                    </div>
+                </div>
+
+            </div>
+        `).join("")}
+    `;
+}
+
+/* ==============================
    FILTER
 ============================== */
 
@@ -335,8 +395,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (searchButton) {
 
-        searchButton.addEventListener("click", () => {
+        searchButton.addEventListener("click", async () => {
             applyFilter();
+            const prompt = buildPrompt();
+            const results = await callOpenAI(prompt);
+            console.log("AI-resultater:", results);
+            renderResults(results);
         });
     }
 
