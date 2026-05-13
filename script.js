@@ -89,6 +89,81 @@ function drawAreas(colorFunc) {
 }
 
 /* ==============================
+   CALL OPENAI
+============================== */
+
+async function callOpenAI(prompt) {
+
+    const response = await fetch("https://api.openai.com/v1/chat/completions", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + API_KEY
+        },
+        body: JSON.stringify({
+            model: "gpt-4o-mini",
+            messages: [
+                {
+                    role: "system",
+                    content: "Du er en norsk boligrådgiver. Svar kun med JSON."
+                },
+                {
+                    role: "user",
+                    content: prompt
+                }
+            ]
+        })
+    });
+
+    const data = await response.json();
+    const text = data.choices[0].message.content;
+    return JSON.parse(text);
+}
+
+/* ==============================
+   BUILD PROMPT
+============================== */
+
+function buildPrompt() {
+
+    const arbeidssted = document.getElementById("input-arbeidssted").value || "ikke oppgitt";
+    const reisetid = document.getElementById("input-reisetid").value || "ikke oppgitt";
+    const budsjettMin = document.getElementById("input-budsjett-min").value || "ikke oppgitt";
+    const budsjettMax = document.getElementById("input-budsjett-max").value || "ikke oppgitt";
+
+    const checkboxes = document.querySelectorAll('input[name="fasiliteter"]:checked');
+    const fasiliteter = Array.from(checkboxes).map(cb => cb.value);
+    const fasiliteterTekst = fasiliteter.length > 0 ? fasiliteter.join(", ") : "ingen valgt";
+
+    const omraadeData = JSON.stringify(areas);
+
+    return `
+Du er en norsk boligrådgiver. Brukeren leter etter et nabolag i Bergen.
+
+Brukerens preferanser:
+- Arbeidssted: ${arbeidssted}
+- Maks reisetid: ${reisetid} minutter
+- Budsjett: ${budsjettMin} – ${budsjettMax} NOK
+- Viktige fasiliteter: ${fasiliteterTekst}
+
+Her er nabolagsdataen:
+${omraadeData}
+
+Ranger nabolagene fra best til dårligst match basert på preferansene.
+Svar KUN med et JSON-array i dette formatet, ingen annen tekst:
+[
+  {
+    "name": "Navn på nabolag",
+    "score": 85,
+    "pros": ["Fordel 1", "Fordel 2"],
+    "cons": ["Ulempe 1"],
+    "summary": "Kort forklaring på norsk"
+  }
+]
+    `.trim();
+}
+
+/* ==============================
    FILTER
 ============================== */
 

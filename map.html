@@ -40,6 +40,7 @@
                 <input
                     type="text"
                     class="input input--container--color"
+                    id="input-arbeidssted"
                     placeholder="Legg inn arbeidssted"
                     aria-label="Legg inn arbeidssted"
                 />
@@ -65,7 +66,7 @@
             <div class="container-reisevei">
                 <div>
                     <p class="filter-label">Reisevei</p>
-                    <select class="input input--container--color" aria-label="Maks reisetid">
+                    <select id="input-reisetid" class="input input--container--color" aria-label="Maks reisetid">
                         <option value="" disabled selected>Maks tid fra hjem til jobb</option>
                         <option value="15">15 minutter</option>
                         <option value="30">30 minutter</option>
@@ -81,6 +82,7 @@
                 <div class="budjsett-rekke">
                     <input
                         type="number"
+                        id="input-budsjett-min"
                         class="input input--container--color"
                         placeholder="Min pris"
                         aria-label="Minimumspris"
@@ -88,6 +90,7 @@
                     <span class="budget-separator" aria-hidden="true">–</span>
                     <input
                         type="number"
+                        id="input-budsjett-max"
                         class="input input--container--color"
                         placeholder="Max pris"
                         aria-label="Maksimumspris"
@@ -201,7 +204,7 @@
             </a>
         </div>
     </footer>
-    
+    <script src="config.js"></script>
     <script src="script.js"></script>
     <script async
     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBFkMoWM4aP5EWSQ1Q2AjPfZwws7PoQ4G0&callback=initMap">
