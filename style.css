@@ -454,6 +454,16 @@ body {
     color: var(--color-white);
 }
 
+.btn--disabled {
+    background-color: var(--color-borders);
+    color: var(--color-muted-grey);
+    cursor: not-allowed;
+}
+
+.btn--disabled:hover {
+    background-color: var(--color-borders);
+}
+
 /*==============================
             COMPONENTS (FILTER)
 ===============================*/
@@ -523,8 +533,10 @@ body {
 
 /* MÅ lage en aktiv trykket knapp, denne holder ikke så lenge når den blir trykket på */
 
-.fremkomst-icon:active{
+.fremkomst-icon:active,
+.fremkomst-icon.active {
     background-color: var(--color-primary);
+    color: var(--color-white);
     transition-duration: 0.05s;
 }
 
@@ -561,6 +573,7 @@ body {
     flex-direction: column;
     overflow-y: auto;
 }
+
 
 /* Filter panel extras */
 .filter-title {
@@ -632,7 +645,8 @@ select.input {
 /*==============================
         COMPONENTS (Match-cards)
 ===============================*/
-.best-matches{
+.best-matches {
+    padding: var(--space-lg);
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -759,6 +773,11 @@ select.input {
 }
 
 .card-btn-add:hover {
+    background-color: var(--color-primary);
+    color: var(--color-white);
+}
+
+.card-btn-add--active {
     background-color: var(--color-primary);
     color: var(--color-white);
 }
@@ -991,12 +1010,12 @@ select.input {
 
 #map {
     width: 100%;
-    height: calc(100vh - 64px);
-    border-radius: var(--radius-xl);
-    overflow: hidden;
-    box-shadow: var(--shadow);
-    background-color: #ddd;
+    height: 55vh;
+    flex-shrink: 0;
     position: sticky;
     top: 0;
     z-index: 10;
+    overflow: hidden;
+    box-shadow: var(--shadow);
+    background-color: #ddd;
 }

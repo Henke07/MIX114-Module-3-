@@ -127,6 +127,8 @@ async function callOpenAI(prompt) {
 function buildPrompt() {
 
     const arbeidssted = document.getElementById("input-arbeidssted").value || "ikke oppgitt";
+    const activeTransport = document.querySelector(".fremkomst-icon.active");
+    const transportmiddel = activeTransport ? activeTransport.getAttribute("aria-label") : "ikke oppgitt";
     const reisetid = document.getElementById("input-reisetid").value || "ikke oppgitt";
     const budsjettMin = document.getElementById("input-budsjett-min").value || "ikke oppgitt";
     const budsjettMax = document.getElementById("input-budsjett-max").value || "ikke oppgitt";
@@ -141,10 +143,13 @@ function buildPrompt() {
     })));
 
     return `
-Du er en norsk boligrådgiver. Brukeren leter etter et nabolag i Bergen.
+Du er en norsk boligrådgiver med god kjennskap til Bergen og dens nabolag.
 
-Brukerens preferanser:
-- Arbeidssted: ${arbeidssted}
+Brukeren jobber på: ${arbeidssted}
+Bruk din kunnskap om Bergens geografi til å vurdere hvor nært eller langt hvert nabolag er fra denne adressen, og ta hensyn til dette i rangeringen.
+
+Brukerens øvrige preferanser:
+- Transportmiddel: ${transportmiddel}
 - Maks reisetid: ${reisetid} minutter
 - Budsjett: ${budsjettMin} – ${budsjettMax} NOK
 - Viktige fasiliteter: ${fasiliteterTekst}
@@ -152,7 +157,7 @@ Brukerens preferanser:
 Her er nabolagsdataen:
 ${omraadeData}
 
-Ranger nabolagene fra best til dårligst match basert på preferansene.
+Ranger nabolagene fra best til dårligst match. Ta hensyn til både geografisk nærhet til arbeidsstedet og de øvrige preferansene.
 Svar KUN med et JSON-array i dette formatet, ingen annen tekst:
 [
   {
@@ -160,7 +165,7 @@ Svar KUN med et JSON-array i dette formatet, ingen annen tekst:
     "score": 85,
     "pros": ["Fordel 1", "Fordel 2"],
     "cons": ["Ulempe 1"],
-    "summary": "Kort forklaring på norsk"
+    "summary": "Kort forklaring på norsk som nevner reisetid fra arbeidsstedet"
   }
 ]
     `.trim();
@@ -170,7 +175,12 @@ Svar KUN med et JSON-array i dette formatet, ingen annen tekst:
    RENDER RESULTS
 ============================== */
 
+let lastResults = [];
+
 function renderResults(results) {
+
+    lastResults = results;
+    localStorage.setItem("lastResults", JSON.stringify(results));
 
     const container = document.querySelector(".best-matches");
 
@@ -179,7 +189,7 @@ function renderResults(results) {
             <h2>Dine beste matcher er:</h2>
             <p>Viser ${results.length} områder</p>
         </div>
-        ${results.map(area => `
+        ${results.map((area, index) => `
             <div class="best-matches-card">
 
                 <div class="best-matches-card-img">
@@ -211,8 +221,8 @@ function renderResults(results) {
 
                 <div class="best-matches-card-buttons">
                     <div class="card-btn-group">
-                        <button class="card-btn-add" aria-label="Legg til i sammenligning" onclick='addToComparison(${JSON.stringify(area)})'>+</button>
-                        <span class="card-btn-label">Legg til</span>
+                        <button class="card-btn-add" data-index="${index}" aria-label="Legg til i sammenligning">+</button>
+                        <span class="card-btn-label" data-label="${index}">Legg til</span>
                     </div>
                     <button class="card-btn-heart" aria-label="Lagre">♡</button>
                     <div class="card-match-badge">
@@ -224,6 +234,12 @@ function renderResults(results) {
             </div>
         `).join("")}
     `;
+
+    container.querySelectorAll(".card-btn-add").forEach(btn => {
+        btn.addEventListener("click", () => {
+            addToComparison(lastResults[btn.dataset.index], btn);
+        });
+    });
 }
 
 /* ==============================
@@ -379,19 +395,27 @@ function generateSummary(area) {
 
 let selectedAreas = [];
 
-function addToComparison(area) {
+function addToComparison(area, btn) {
 
-    if (selectedAreas.length >= 2) {
-        alert("Du kan bare sammenligne 2 områder. Fjern ett først.");
-        return;
+    const alreadyAdded = selectedAreas.find(a => a.name === area.name);
+    const label = document.querySelector(`.card-btn-label[data-label="${btn.dataset.index}"]`);
+
+    if (alreadyAdded) {
+        selectedAreas = selectedAreas.filter(a => a.name !== area.name);
+        btn.textContent = "+";
+        btn.classList.remove("card-btn-add--active");
+        if (label) label.textContent = "Legg til";
+    } else {
+        if (selectedAreas.length >= 2) {
+            alert("Du kan bare sammenligne 2 områder. Fjern ett først.");
+            return;
+        }
+        selectedAreas.push(area);
+        btn.textContent = "−";
+        btn.classList.add("card-btn-add--active");
+        if (label) label.textContent = "Fjern";
     }
 
-    if (selectedAreas.find(a => a.name === area.name)) {
-        alert(area.name + " er allerede lagt til.");
-        return;
-    }
-
-    selectedAreas.push(area);
     localStorage.setItem("comparisonAreas", JSON.stringify(selectedAreas));
     updateCompareButton();
 }
@@ -424,6 +448,25 @@ function updateCompareButton() {
 
 document.addEventListener("DOMContentLoaded", () => {
 
+    const savedResults = localStorage.getItem("lastResults");
+    if (savedResults) {
+        renderResults(JSON.parse(savedResults));
+    }
+
+    const savedComparison = localStorage.getItem("comparisonAreas");
+    if (savedComparison) {
+        selectedAreas = JSON.parse(savedComparison);
+        updateCompareButton();
+    }
+
+    // Transport buttons
+    document.querySelectorAll(".fremkomst-icon").forEach(btn => {
+        btn.addEventListener("click", () => {
+            document.querySelectorAll(".fremkomst-icon").forEach(b => b.classList.remove("active"));
+            btn.classList.add("active");
+        });
+    });
+
     // Checkbox-filter
     const checkboxes = document.querySelectorAll(
         'input[name="fasiliteter"]'
@@ -445,6 +488,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
         searchButton.addEventListener("click", async () => {
             applyFilter();
+
+            selectedAreas = [];
+            localStorage.removeItem("comparisonAreas");
+            const existingBtn = document.getElementById("compare-button");
+            if (existingBtn) existingBtn.remove();
 
             const container = document.querySelector(".best-matches");
             container.innerHTML = `
