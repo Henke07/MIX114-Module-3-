@@ -869,6 +869,83 @@ select.input {
 }
 
 /*==============================
+        COMPARISON PAGE
+===============================*/
+
+.compare-header {
+    padding: var(--space-3xl) var(--space-2xl) var(--space-xl);
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.compare-title {
+    font-size: var(--text-h2);
+    font-weight: var(--weight-bold);
+}
+
+.back-nav {
+    padding: var(--space-xl) var(--space-2xl) 0;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-sm);
+    text-decoration: none;
+    color: var(--color-primary);
+    font-weight: var(--weight-semibold);
+}
+
+.compare-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-2xl);
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: var(--space-xl) var(--space-2xl) var(--space-4xl);
+}
+
+.compare-column {
+    background-color: var(--color-white);
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow);
+    padding: var(--space-2xl);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xl);
+}
+
+.column-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.column-header h2 {
+    font-size: var(--text-h3);
+    font-weight: var(--weight-bold);
+}
+
+.ai-explanation h3 {
+    font-size: var(--text-body);
+    font-weight: var(--weight-semibold);
+    color: var(--color-secondary-dark-70);
+    margin-bottom: var(--space-sm);
+}
+
+.pros-cons {
+    display: flex;
+    gap: var(--space-xl);
+}
+
+.pros-cons .pros,
+.pros-cons .cons {
+    flex: 1;
+}
+
+/*==============================
         GOOGLE MAP
 ===============================*/
 

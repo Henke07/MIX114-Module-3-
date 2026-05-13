@@ -208,7 +208,7 @@ function renderResults(results) {
 
                 <div class="best-matches-card-buttons">
                     <div class="card-btn-group">
-                        <button class="card-btn-add" aria-label="Legg til i sammenligning">+</button>
+                        <button class="card-btn-add" aria-label="Legg til i sammenligning" onclick='addToComparison(${JSON.stringify(area)})'>+</button>
                         <span class="card-btn-label">Legg til</span>
                     </div>
                     <button class="card-btn-heart" aria-label="Lagre">♡</button>
@@ -368,6 +368,51 @@ function generateSummary(area) {
     }
 
     return "Et balansert område med gode fasiliteter.";
+}
+
+/* ==============================
+   COMPARISON
+============================== */
+
+let selectedAreas = [];
+
+function addToComparison(area) {
+
+    if (selectedAreas.length >= 2) {
+        alert("Du kan bare sammenligne 2 områder. Fjern ett først.");
+        return;
+    }
+
+    if (selectedAreas.find(a => a.name === area.name)) {
+        alert(area.name + " er allerede lagt til.");
+        return;
+    }
+
+    selectedAreas.push(area);
+    localStorage.setItem("comparisonAreas", JSON.stringify(selectedAreas));
+    updateCompareButton();
+}
+
+function updateCompareButton() {
+
+    let btn = document.getElementById("compare-button");
+
+    if (selectedAreas.length === 0) {
+        if (btn) btn.remove();
+        return;
+    }
+
+    if (!btn) {
+        btn = document.createElement("button");
+        btn.id = "compare-button";
+        btn.className = "btn btn--primary";
+        btn.addEventListener("click", () => {
+            window.location.href = "comparison.html";
+        });
+        document.querySelector(".best-matches").appendChild(btn);
+    }
+
+    btn.textContent = `Sammenlign ${selectedAreas.length}/2 områder →`;
 }
 
 /* ==============================

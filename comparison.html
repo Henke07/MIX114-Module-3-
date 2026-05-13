@@ -4,23 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sammenlign områder</title>
-
     <link rel="stylesheet" href="style.css">
-
 </head>
 
-<body class="compariosn-page">
-    
-    <h1>TESTER</h1>
+<body class="comparison-page">
 
-    <!--Header til alle sidene-->
     <header class="site-header" role="banner">
         <div class="header-content">
             <a href="index.html" class="logo" aria-label="Reisevei — gå til forsiden">
                 <span class="logo-icon" aria-hidden="true">🏘️</span>
                 <span class="logo-text">Reisevei</span>
             </a>
-
             <nav class="main-nav" aria-label="Hovednavigasjon">
                 <button type="button" class="header-search-button" id="header-search-button">
                     <span class="header-search-text">Søk</span>
@@ -32,104 +26,25 @@
         </div>
     </header>
 
-
     <main id="main-content">
 
-    <!-- Back link -->
-    <nav class="back-nav">
-        <a href="map.html" class="back-link" id="back-link">
-            <span class="back-arrow" aria-hidden="true">←</span>
-            <span class="back-text">Tilbake</span>
-        </a>
-    </nav>
+        <nav class="back-nav">
+            <a href="map.html" class="back-link">
+                <span class="back-arrow" aria-hidden="true">←</span>
+                <span class="back-text">Tilbake</span>
+            </a>
+        </nav>
 
-    <!-- Title -->
-    <header class="compare-header">
-        <h1 class="compare-title">Sammenlign områder</h1>
-    </header>
+        <header class="compare-header">
+            <h1 class="compare-title">Sammenlign områder</h1>
+        </header>
 
-    <!-- Grid dynamisk fra API -->
-    <section class="compare-grid" id="compare-grid">
-
-        <!-- TEMPLATE -->
-        <article class="compare-column" id="area-template" style="display:none;">
-
-            <header class="column-header">
-                <figure class="column-image-wrapper">
-                    <img src="" alt="" class="column-image" data-image>
-                    <figcaption class="column-image-title" data-name></figcaption>
-                </figure>
-                <span class="match-badge" data-match></span>
-            </header>
-
-            <!-- Chart -->
-            <section class="chart-section">
-                <h2 class="chart-title">Kostnad vs. Reisetid</h2>
-                <div class="chart" data-chart></div>
-
-                <ul class="chart-values">
-                    <li>
-                        <span>Kostnad</span>
-                        <span data-cost></span>
-                    </li>
-                    <li>
-                        <span>Reisetid</span>
-                        <span data-time></span>
-                    </li>
-                </ul>
-            </section>
-
-            <!-- AI -->
-            <section class="ai-explanation">
-                <h2>✦ AI forklaring</h2>
-                <p data-ai></p>
-            </section>
-
-            <!-- Commute -->
-            <section class="commute-timeline">
-            <   h2>Pendlerkart</h2>
-
-                <div class="commute-total-time">
-                    ⏱ <span data-total-time></span>
-                </div>
-
-                <ol class="route-timeline" data-route></ol>
-            </section>
-
-            <!-- Pros/Cons -->
-            <section class="pros-cons">
-                <div class="pros">
-                    h3>Fordeler</h3>
-                    <ul data-pros></ul>
-                </div>
-                <div class="cons">
-                    <h3>Ulemper</h3>
-                    <ul data-cons></ul>
-                </div>
-            </section>
-        </article>
-
-    </section>
-
-    <!--Ai forklaring-->
-    <section class="ai-recommendation">
-        <h2>
-            ✦ AI Anbefaler:
-            <span id="recommended-area"></span>
-        </h2>
-        <p id="recommendation-text"></p>
-    </section>
-
-    <!-- CTA -->
-    <div class="home-cta-wrapper">
-        <a href="index.html" class="secondary-button">
-            Tilbake til forsiden
-        </a>
-    </div>
+        <section class="compare-grid" id="compare-grid">
+            <!-- Filled dynamically by comparison.js -->
+        </section>
 
     </main>
 
-    <!--Felles footer-->
     <footer class="site-footer" role="contentinfo">
         <div class="footer-content">
             <ul class="footer-links" role="list">
@@ -143,6 +58,8 @@
             </a>
         </div>
     </footer>
-    
+
+    <script src="comparison.js"></script>
+
 </body>
 </html>
