@@ -135,7 +135,10 @@ function buildPrompt() {
     const fasiliteter = Array.from(checkboxes).map(cb => cb.value);
     const fasiliteterTekst = fasiliteter.length > 0 ? fasiliteter.join(", ") : "ingen valgt";
 
-    const omraadeData = JSON.stringify(areas);
+    const omraadeData = JSON.stringify(areas.map(a => ({
+        name: a.name,
+        data: a.data
+    })));
 
     return `
 Du er en norsk boligrådgiver. Brukeren leter etter et nabolag i Bergen.

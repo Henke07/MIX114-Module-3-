@@ -158,12 +158,25 @@ body {
     cursor: pointer;
 }
 
-.header-search-button:hover {
-    background-color: var(--color-primary-light-10);
+.nav-link {
+    font-family: var(--font-body);
+    font-size: var(--text-body);
+    font-weight: var(--weight-medium);
+    color: var(--color-white);
+    text-decoration: none;
+    padding: var(--space-sm) var(--space-md);
+    border-radius: var(--radius-full);
+    transition: background-color 0.15s ease;
 }
 
-.header-profile-button:hover {
-    background-color: var(--color-secondary-light-40);
+.nav-link:hover {
+    background-color: var(--color-primary-light-50);
+}
+
+.nav-link--active {
+    background-color: var(--color-white);
+    color: var(--color-primary);
+    font-weight: var(--weight-semibold);
 }
 
 /*==============================
@@ -978,9 +991,12 @@ select.input {
 
 #map {
     width: 100%;
-    height: 600px;
+    height: calc(100vh - 64px);
     border-radius: var(--radius-xl);
     overflow: hidden;
     box-shadow: var(--shadow);
     background-color: #ddd;
+    position: sticky;
+    top: 0;
+    z-index: 10;
 }
