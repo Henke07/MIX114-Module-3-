@@ -442,9 +442,17 @@ document.addEventListener("DOMContentLoaded", () => {
 
         searchButton.addEventListener("click", async () => {
             applyFilter();
+
+            const container = document.querySelector(".best-matches");
+            container.innerHTML = `
+                <div class="loading-state">
+                    <span class="loading-spinner" aria-hidden="true"></span>
+                    <p>Finner dine beste matcher...</p>
+                </div>
+            `;
+
             const prompt = buildPrompt();
             const results = await callOpenAI(prompt);
-            console.log("AI-resultater:", results);
             renderResults(results);
         });
     }
