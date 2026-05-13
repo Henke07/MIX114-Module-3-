@@ -8,6 +8,7 @@ let selectedTransport = "car";
 let maxTravelTime = null;
 let minPrice = null;
 let maxPrice = null;
+let activeFilters= [];
 
 /* ==============================
    OMRÅDEDATA
@@ -91,6 +92,7 @@ window.initMap = async function () {
 
     infoWindow = new google.maps.InfoWindow();
     await loadAreas();
+
 
 };
 
@@ -296,56 +298,17 @@ async function applyFilter(workLocationCoords) {
 
     // finne valgt max reisetid dersom den er valgt
     const maxReisetidSelect = document.getElementById("max-reisetid");
-    const maxTravelTime = Number(maxReisetidSelect.value);
-    const selectedTransport = document.querySelector(
+    maxTravelTime = Number(maxReisetidSelect.value);
+    selectedTransport = document.querySelector(
         'input[name="transport"]:checked'
     )?.value;
-    if (maxTravelTime && selectedTransport) {
-        console.log("selectedMode", selectedTransport)
-        console.log("maxtime", maxTravelTime)
-        // Get selected travel mode from
-        filteredAreas = filteredAreas.filter(a => {
-            const travelTimes = a[1];
-            if (selectedTransport == "buss") {
-                const bussResult = maxTravelTime >= travelTimes.transit.minutes;
-                console.log(a[0].name, "buss", travelTimes.transit, bussResult);
-                return bussResult;
-            }
-            if (selectedTransport == "bil") {
-                const bilResult = maxTravelTime >= travelTimes.car.minutes;
-                console.log(a[0].name, "bil", travelTimes.car, bilResult);
-                return bilResult;
-            }
-            if (selectedTransport == "gå") {
-                const walkResult = maxTravelTime >= travelTimes.walk.minutes;
-                console.log(a[0].name, "gå", travelTimes.walk, walkResult);
-                return walkResult;
-            }
 
-        })
-    }
     console.log("filteredDistenace", filteredAreas);
 
 
-    // hent max / min pris
-    const min = Number(
-        document.getElementById("min-price").value
-    );
-
-    const max = Number(
-        document.getElementById("max-price").value
-    );
-    console.log("maxmin", min, max)
-    // getbyid value for max / min
-    if (max && min) {
-        filteredAreas = filteredAreas.filter(a => {
-            const areaInfo = a[0];
-            const price = areaInfo.data.priceValue;
-            return (min <= price && max >= price)
-        })
-    }
     console.log("filteredbypriceanddisance", filteredAreas);
     const filters = Array.from(checkboxes).map(cb => cb.value);
+    activeFilters = filters;
 
     console.log("filters", filters)
 
@@ -375,12 +338,13 @@ async function applyFilter(workLocationCoords) {
 
         const score = calculateScore(area, filters);
 
-        if (score === bestScore) {
+        // Normaliser score mellom 0 og 1
+        if (score >= 85) {
             return "#3DC485"; // grønn
         }
 
-        if (score >= bestScore * 0.6) {
-            return "#FFD26B"; // gul/orange
+        if (score >= 65) {
+            return "#FFD26B"; // gul
         }
 
         return "#F4665B"; // rød
@@ -428,23 +392,18 @@ function calculateDistance(
 function calculateScore(area, filters) {
 
     let score = 0;
-
-    // Prisfilter
-    if (
-        minPrice &&
-        area.data.priceValue < minPrice
-    ) {
-        return -999;
+    let maxScore = 0;
+    if (minPrice && area.data.priceValue < minPrice) {
+        score -= 15;
     }
 
-    if (
-        maxPrice &&
-        area.data.priceValue > maxPrice
-    ) {
-        return -999;
+    if (maxPrice && area.data.priceValue > maxPrice) {
+        score -= 15;
     }
 
     filters.forEach(filter => {
+
+        maxScore += 10; // hvert kriterium er av 10
 
         switch (filter) {
 
@@ -469,6 +428,8 @@ function calculateScore(area, filters) {
                 break;
         }
     });
+
+    // Reisetid bonus
     if (workLocationCoords) {
 
         const distance =
@@ -503,16 +464,26 @@ function calculateScore(area, filters) {
             maxTravelTime &&
             estimatedMinutes > maxTravelTime
         ) {
-            return -999;
+            score -= 25;
         }
 
-        score += Math.max(
+        // Gi opptil 10 poeng for kort reisetid
+        const travelScore = Math.max(
             0,
-            30 - estimatedMinutes
+            20 - (estimatedMinutes / 5)
         );
+
+        score += travelScore;
+        maxScore += 20;
     }
 
-    return score;
+    // Unngå deling på 0
+    if (maxScore === 0) {
+        return 0;
+    }
+
+    // Returner prosent
+    return Math.round((score / maxScore) * 100);
 }
 
 /* ==============================
@@ -531,6 +502,7 @@ function showInfo(area, position) {
             <p><strong>Kollektiv:</strong> ${area.data.transport}/10</p>
             <p><strong>Skole:</strong> ${area.data.school}/10</p>
             <p><strong>Matbutikk:</strong> ${area.data.shop}/10</p>
+            <p><strong>Match:</strong> ${calculateScore(area, activeFilters)}%</p>
 
             <br>
 
