@@ -935,3 +935,42 @@ select.input {
     margin: 0;
 }
 
+/* =========================================================
+   SELECT CONTROLS
+========================================================= */
+
+.compare-controls {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin-bottom: 50px;
+}
+
+.compare-controls select {
+    padding: 14px 18px;
+    border-radius: 16px;
+    border: 2px solid #2d7050;
+    background: white;
+    font-size: 16px;
+    min-width: 200px;
+    outline: none;
+}
+
+.compare-controls button {
+    padding: 14px 22px;
+    border-radius: 16px;
+    border: none;
+    background: #2d7050;
+    color: white;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.compare-controls button:hover {
+    background: #24583f;
+    transform: translateY(-1px);
+}
+
