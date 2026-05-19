@@ -1179,6 +1179,30 @@ select.input {
     line-height: 1.5;
 }
 
+/* =========================================================
+   AI RECOMMENDATION
+========================================================= */
+
+.ai-recommendation {
+    background: white;
+    border-radius: 30px;
+    padding: 32px;
+    margin-bottom: 50px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+}
+
+.ai-recommendation h2 {
+    font-size: 34px;
+    margin-top: 0;
+    margin-bottom: 18px;
+}
+
+.ai-recommendation p {
+    line-height: 1.7;
+    font-size: 17px;
+    color: #444;
+}
+
 }
 
 /*==============================
