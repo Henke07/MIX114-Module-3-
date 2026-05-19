@@ -4,11 +4,11 @@ let infoWindow;
 let areas = [];
 let workLocationCoords = null;
 
-let selectedTransport = "car";
+let selectedTransport = "bil";
 let maxTravelTime = null;
 let minPrice = null;
 let maxPrice = null;
-let activeFilters= [];
+let activeFilters = [];
 
 /* ==============================
    OMRÅDEDATA
@@ -37,37 +37,26 @@ async function loadAreas() {
 
 async function geocodeWorkLocation(address) {
 
-    const geocoder =
-        new google.maps.Geocoder();
+    const geocoder = new google.maps.Geocoder();
 
     return new Promise((resolve, reject) => {
 
-        geocoder.geocode(
-            { address: address },
+        geocoder.geocode({ address: address }, (results, status) => {
 
-            (results, status) => {
+            if (status === "OK" && results[0]) {
 
-                if (
-                    status === "OK" &&
-                    results[0]
-                ) {
+                const location = results[0].geometry.location;
 
-                    const location =
-                        results[0].geometry.location;
+                resolve({
+                    lat: location.lat(),
+                    lng: location.lng()
+                });
 
-                    resolve({
-                        lat: location.lat(),
-                        lng: location.lng()
-                    });
+            } else {
 
-                } else {
-
-                    reject(
-                        "Fant ikke adresse"
-                    );
-                }
+                reject("Fant ikke adresse");
             }
-        );
+        });
     });
 }
 
@@ -93,7 +82,6 @@ window.initMap = async function () {
     infoWindow = new google.maps.InfoWindow();
     await loadAreas();
 
-
 };
 
 /* ==============================
@@ -101,10 +89,9 @@ window.initMap = async function () {
 ============================== */
 
 function drawAreas(colorFunc, inputareas = null) {
-    if (!inputareas) {
-        inputareas = areas;
-    }
-    // Fjern gamle polygoner
+
+    if (!inputareas) inputareas = areas;
+
     polygons.forEach(polygon => polygon.setMap(null));
     polygons = [];
 
@@ -135,139 +122,8 @@ function drawAreas(colorFunc, inputareas = null) {
 }
 
 /* ==============================
-   Finne reisetid mellom jobb og områder
-
-async function getTravelTimes(
-    originLat,
-    originLng,
-    destinationLat,
-    destinationLng
-) {
-    const endpoint =
-        "https://routes.googleapis.com/distanceMatrix/v2:computeRouteMatrix";
-
-    const modes = {
-        car: "DRIVE",
-        transit: "TRANSIT",
-        walk: "WALK"
-    };
-
-    const results = {};
-
-    // Neste mandag kl 09:00
-    const transitDepartureTime = getNextMondayAt9AM();
-
-    for (const [label, travelMode] of Object.entries(modes)) {
-        const body = {
-            origins: [
-                {
-                    waypoint: {
-                        location: {
-                            latLng: {
-                                latitude: originLat,
-                                longitude: originLng
-                            }
-                        }
-                    }
-                }
-            ],
-            destinations: [
-                {
-                    waypoint: {
-                        location: {
-                            latLng: {
-                                latitude: destinationLat,
-                                longitude: destinationLng
-                            }
-                        }
-                    }
-                }
-            ],
-            travelMode,
-            languageCode: "no"
-        };
-
-        // Transit krever departureTime
-        if (travelMode === "TRANSIT") {
-            body.departureTime = transitDepartureTime;
-        }
-
-        // Trafikk-aware routing for bil
-        if (travelMode === "DRIVE") {
-            body.routingPreference = "TRAFFIC_AWARE";
-            body.departureTime = new Date(
-                Date.now() + 2 * 60 * 1000
-            ).toISOString();
-        }
-
-        const response = await fetch(endpoint, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "X-Goog-Api-Key": "AIzaSyBFkMoWM4aP5EWSQ1Q2AjPfZwws7PoQ4G0",
-                "X-Goog-FieldMask":
-                    "originIndex,destinationIndex,duration,distanceMeters,status"
-            },
-            body: JSON.stringify(body)
-        });
-
-        if (!response.ok) {
-            throw new Error(
-                `Google API error (${travelMode}): ${response.status}`
-            );
-        }
-        const route = (await response.json())[0];
-        const durationSeconds = parseDuration(route.duration);
-
-        results[label] = {
-            seconds: durationSeconds,
-            minutes: Math.round(durationSeconds / 60),
-            distanceMeters: route.distanceMeters,
-            readable: formatDuration(durationSeconds)
-        };
-    }
-
-    return results;
-}
-
-function getNextMondayAt9AM() {
-    const now = new Date();
-
-    // Start med dagens dato
-    const result = new Date(now);
-
-    const currentDay = result.getDay();
-
-    // Finn dager til neste mandag
-    let daysUntilMonday = (8 - currentDay) % 7;
-
-    // ALLTID neste mandag
-    if (daysUntilMonday === 0) {
-        daysUntilMonday = 7;
-    }
-
-    result.setDate(result.getDate() + daysUntilMonday);
-
-    // Sett lokal tid 09:00
-    result.setHours(9, 0, 0, 0);
-
-    return result.toISOString();
-}
-
-function parseDuration(durationString) {
-    return Number(durationString.replace("s", ""));
-}
-
-function formatDuration(seconds) {
-    const hours = Math.floor(seconds / 3600);
-    const minutes = Math.round((seconds % 3600) / 60);
-
-    if (hours > 0) {
-        return `${hours} t ${minutes} min`;
-    }
-
-    return `${minutes} min`;
    CALL OPENAI
+============================== */
 
 async function callOpenAI(prompt) {
 
@@ -299,15 +155,16 @@ async function callOpenAI(prompt) {
 
 /* ==============================
    BUILD PROMPT
+============================== */
 
 function buildPrompt() {
 
-    const arbeidssted = document.getElementById("input-arbeidssted").value || "ikke oppgitt";
-    const activeTransport = document.querySelector(".fremkomst-icon.active");
-    const transportmiddel = activeTransport ? activeTransport.getAttribute("aria-label") : "ikke oppgitt";
+    const arbeidssted = document.getElementById("work-location").value || "ikke oppgitt";
+    const activeTransport = document.querySelector('input[name="transport"]:checked');
+    const transportmiddel = activeTransport ? activeTransport.value : "ikke oppgitt";
     const reisetid = document.getElementById("input-reisetid").value || "ikke oppgitt";
-    const budsjettMin = document.getElementById("input-budsjett-min").value || "ikke oppgitt";
-    const budsjettMax = document.getElementById("input-budsjett-max").value || "ikke oppgitt";
+    const budsjettMin = document.getElementById("min-price").value || "ikke oppgitt";
+    const budsjettMax = document.getElementById("max-price").value || "ikke oppgitt";
 
     const checkboxes = document.querySelectorAll('input[name="fasiliteter"]:checked');
     const fasiliteter = Array.from(checkboxes).map(cb => cb.value);
@@ -349,6 +206,7 @@ Svar KUN med et JSON-array i dette formatet, ingen annen tekst:
 
 /* ==============================
    RENDER RESULTS
+============================== */
 
 let lastResults = [];
 
@@ -421,216 +279,104 @@ function renderResults(results) {
    FILTER
 ============================== */
 
-async function applyFilter(workLocationCoords) {
-    // filters:
-    // 1. Reisetif
-    // 2. Budsjett
-    // 3. Nærhet til X
-
+function applyFilter(coords) {
 
     const checkboxes = document.querySelectorAll(
         'input[name="fasiliteter"]:checked'
     );
 
-    // Finne reisetider for alle areas
-
-    let filteredAreas = [];
-    for (let area in areas) {
-        const areaData = areas[area];
-        const areaDistance = await getTravelTimes(areaData.center.lat, areaData.center.lng, workLocationCoords.lat, workLocationCoords.lng);
-        filteredAreas.push([areaData, areaDistance]);
-    }
-    console.log("areaswithdistance", filteredAreas);
-
-
-    // finne valgt max reisetid dersom den er valgt
-    const maxReisetidSelect = document.getElementById("max-reisetid");
-    maxTravelTime = Number(maxReisetidSelect.value);
-    selectedTransport = document.querySelector(
-        'input[name="transport"]:checked'
-    )?.value;
-
-    console.log("filteredDistenace", filteredAreas);
-
-
-    console.log("filteredbypriceanddisance", filteredAreas);
     const filters = Array.from(checkboxes).map(cb => cb.value);
     activeFilters = filters;
 
-    console.log("filters", filters)
+    maxTravelTime = Number(document.getElementById("input-reisetid").value);
+    selectedTransport = document.querySelector('input[name="transport"]:checked')?.value;
 
-    // Ingen filter valgt
-    if (filters.length === 0) {
-
+    if (filters.length === 0 && !coords) {
         polygons.forEach(polygon => polygon.setMap(null));
         polygons = [];
-
         return;
     }
 
-    let bestScore = -1;
-
-    // Finn beste score
-    filteredAreas.map(a => a[0]).forEach(area => {
-
-        const score = calculateScore(area, filters);
-
-        if (score > bestScore) {
-            bestScore = score;
-        }
-    });
-
-    // Tegn med farger
     drawAreas(area => {
 
-        const score = calculateScore(area, filters);
+        const score = calculateScore(area, filters, coords);
 
-        // Normaliser score mellom 0 og 1
-        if (score >= 85) {
-            return "#3DC485"; // grønn
-        }
-
-        if (score >= 65) {
-            return "#FFD26B"; // gul
-        }
-
-        return "#F4665B"; // rød
-    }, filteredAreas.map(a => a[0]));
-}
-
-function calculateDistance(
-    lat1,
-    lng1,
-    lat2,
-    lng2
-) {
-
-    const R = 6371;
-
-    const dLat =
-        (lat2 - lat1) * Math.PI / 180;
-
-    const dLng =
-        (lng2 - lng1) * Math.PI / 180;
-
-    const a =
-        Math.sin(dLat / 2) *
-        Math.sin(dLat / 2) +
-
-        Math.cos(lat1 * Math.PI / 180) *
-        Math.cos(lat2 * Math.PI / 180) *
-
-        Math.sin(dLng / 2) *
-        Math.sin(dLng / 2);
-
-    const c =
-        2 * Math.atan2(
-            Math.sqrt(a),
-            Math.sqrt(1 - a)
-        );
-
-    return R * c;
+        if (score >= 85) return "#3DC485";
+        if (score >= 65) return "#FFD26B";
+        return "#F4665B";
+    });
 }
 
 /* ==============================
    SCORE SYSTEM
 ============================== */
 
-function calculateScore(area, filters) {
+function calculateScore(area, filters, coords) {
 
     let score = 0;
     let maxScore = 0;
-    if (minPrice && area.data.priceValue < minPrice) {
-        score -= 15;
-    }
 
-    if (maxPrice && area.data.priceValue > maxPrice) {
-        score -= 15;
-    }
+    if (minPrice && area.data.priceValue < minPrice) score -= 15;
+    if (maxPrice && area.data.priceValue > maxPrice) score -= 15;
 
     filters.forEach(filter => {
 
-        maxScore += 10; // hvert kriterium er av 10
+        maxScore += 10;
 
         switch (filter) {
-
-            case "kollektiv":
-                score += area.data.transport;
-                break;
-
-            case "skole":
-                score += area.data.school;
-                break;
-
-            case "matbutikk":
-                score += area.data.shop;
-                break;
-
-            case "barnehage":
-                score += area.data.kindergarten;
-                break;
-
-            case "apotek":
-                score += area.data.pharmacy;
-                break;
+            case "kollektiv": score += area.data.transport;    break;
+            case "skole":     score += area.data.school;       break;
+            case "matbutikk": score += area.data.shop;         break;
+            case "barnehage": score += area.data.kindergarten; break;
+            case "apotek":    score += area.data.pharmacy;     break;
         }
     });
 
-    // Reisetid bonus
-    if (workLocationCoords) {
+    const loc = coords || workLocationCoords;
 
-        const distance =
-            calculateDistance(
-                workLocationCoords.lat,
-                workLocationCoords.lng,
-                area.center.lat,
-                area.center.lng
-            );
+    if (loc) {
 
-        let multiplier = 1;
-
-        switch (selectedTransport) {
-
-            case "gå":
-                multiplier = 12;
-                break;
-
-            case "buss":
-                multiplier = 3;
-                break;
-
-            case "bil":
-                multiplier = 1.5;
-                break;
-        }
-
-        const estimatedMinutes =
-            distance * multiplier;
-
-        if (
-            maxTravelTime &&
-            estimatedMinutes > maxTravelTime
-        ) {
-            score -= 25;
-        }
-
-        // Gi opptil 10 poeng for kort reisetid
-        const travelScore = Math.max(
-            0,
-            20 - (estimatedMinutes / 5)
+        const distance = calculateDistance(
+            loc.lat, loc.lng,
+            area.center.lat, area.center.lng
         );
 
+        let multiplier = 1.5;
+
+        switch (selectedTransport) {
+            case "gå":   multiplier = 12; break;
+            case "buss": multiplier = 3;  break;
+            case "bil":  multiplier = 1.5; break;
+        }
+
+        const estimatedMinutes = distance * multiplier;
+
+        if (maxTravelTime && estimatedMinutes > maxTravelTime) score -= 25;
+
+        const travelScore = Math.max(0, 20 - (estimatedMinutes / 5));
         score += travelScore;
         maxScore += 20;
     }
 
-    // Unngå deling på 0
-    if (maxScore === 0) {
-        return 0;
-    }
+    if (maxScore === 0) return 0;
 
-    // Returner prosent
     return Math.round((score / maxScore) * 100);
+}
+
+function calculateDistance(lat1, lng1, lat2, lng2) {
+
+    const R = 6371;
+    const dLat = (lat2 - lat1) * Math.PI / 180;
+    const dLng = (lng2 - lng1) * Math.PI / 180;
+
+    const a =
+        Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+        Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+        Math.sin(dLng / 2) * Math.sin(dLng / 2);
+
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+
+    return R * c;
 }
 
 /* ==============================
@@ -658,9 +404,7 @@ function showInfo(area, position) {
     `;
 
     infoWindow.setContent(content);
-
     infoWindow.setPosition(position);
-
     infoWindow.open(map);
 }
 
@@ -670,26 +414,14 @@ function showInfo(area, position) {
 
 function generateSummary(area) {
 
-    if (
-        area.data.price < 5 &&
-        area.data.transport > 7
-    ) {
+    if (area.data.price < 5 && area.data.transport > 7)
         return "Et rimelig område med svært god kollektivdekning.";
-    }
 
-    if (
-        area.data.school > 8 &&
-        area.data.kindergarten > 7
-    ) {
+    if (area.data.school > 8 && area.data.kindergarten > 7)
         return "Perfekt for familier med gode skoler og barnehager.";
-    }
 
-    if (
-        area.data.shop > 8 &&
-        area.data.transport > 8
-    ) {
+    if (area.data.shop > 8 && area.data.transport > 8)
         return "Sentralt område med mange fasiliteter i nærheten.";
-    }
 
     return "Et balansert område med gode fasiliteter.";
 }
@@ -753,113 +485,46 @@ function updateCompareButton() {
 
 document.addEventListener("DOMContentLoaded", () => {
 
-    const savedResults = localStorage.getItem("lastResults");
-    if (savedResults) {
-        renderResults(JSON.parse(savedResults));
-    }
-
-    const savedComparison = localStorage.getItem("comparisonAreas");
-    if (savedComparison) {
-        selectedAreas = JSON.parse(savedComparison);
-        updateCompareButton();
-    }
-
-    // Transport buttons
-    document.querySelectorAll(".fremkomst-icon").forEach(btn => {
-        btn.addEventListener("click", () => {
-            document.querySelectorAll(".fremkomst-icon").forEach(b => b.classList.remove("active"));
-            btn.classList.add("active");
-        });
-    });
-
-    // Checkbox-filter
-    const checkboxes = document.querySelectorAll(
-        'input[name="fasiliteter"]'
-    );
-
-    checkboxes.forEach(checkbox => {
-
-        checkbox.addEventListener("change", () => {
-            //applyFilter();
-        });
-    });
+    localStorage.removeItem("lastResults");
+    localStorage.removeItem("comparisonAreas");
 
     // Søk-knapp
-    const searchButton = document.querySelector(
-        ".btn--primary"
-    );
+    const searchButton = document.querySelector(".btn--primary");
 
     if (searchButton) {
 
-        searchButton.addEventListener(
-            "click",
-
-            async () => {
-
-                const input =
-                    document.getElementById(
-                        "work-location"
-                    );
-
-                const address = input.value;
-
-                maxTravelTime = Number(
-                    document.querySelector("select").value
-                );
-
-                minPrice = Number(
-                    document.querySelector(
-                        'input[placeholder="Min pris"]'
-                    ).value
-                );
-
-                maxPrice = Number(
-                    document.querySelector(
-                        'input[placeholder="Max pris"]'
-                    ).value
-                );
-
-                if (address) {
-
-                    try {
-
-                        workLocationCoords =
-                            await geocodeWorkLocation(
-                                address
-                            );
-
-                        console.log(
-                            "Arbeidssted:",
-                            workLocationCoords
-                        );
-
-                        new google.maps.Marker({
-                            position: workLocationCoords,
-                            map: map,
-                            title: "Arbeidssted"
-                        });
-
-                        map.panTo(workLocationCoords);
-
-                        map.setZoom(13);
-
-                        await applyFilter(workLocationCoords);
-
-                    } catch (error) {
-
-                        console.log(error);
-                        alert(
-                            "Fant ikke arbeidssted"
-                        );
-
-                        return;
-                    }
-                }
-
-            }
-        );
         searchButton.addEventListener("click", async () => {
-            applyFilter();
+
+            const address = document.getElementById("work-location").value;
+
+            maxTravelTime = Number(document.getElementById("input-reisetid").value);
+            minPrice = Number(document.getElementById("min-price").value);
+            maxPrice = Number(document.getElementById("max-price").value);
+
+            if (!address) {
+                alert("Vennligst skriv inn et arbeidssted.");
+                return;
+            }
+
+            try {
+                workLocationCoords = await geocodeWorkLocation(address);
+
+                new google.maps.Marker({
+                    position: workLocationCoords,
+                    map: map,
+                    title: "Arbeidssted"
+                });
+
+                map.panTo(workLocationCoords);
+                map.setZoom(13);
+
+                applyFilter(workLocationCoords);
+
+            } catch (error) {
+                console.log(error);
+                alert("Fant ikke arbeidssted");
+                return;
+            }
 
             selectedAreas = [];
             localStorage.removeItem("comparisonAreas");
@@ -881,19 +546,13 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // Nullstill filter
-    const resetButton = document.querySelector(
-        ".btn--secondary"
-    );
+    const resetButton = document.querySelector(".btn--secondary");
 
     if (resetButton) {
 
         resetButton.addEventListener("click", () => {
 
-            const checkboxes = document.querySelectorAll(
-                'input[name="fasiliteter"]'
-            );
-
-            checkboxes.forEach(cb => {
+            document.querySelectorAll('input[name="fasiliteter"]').forEach(cb => {
                 cb.checked = false;
             });
 

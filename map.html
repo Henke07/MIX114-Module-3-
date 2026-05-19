@@ -38,7 +38,6 @@
                     type="text"
                     id="work-location"
                     class="input input--container--color"
-                    id="input-arbeidssted"
                     placeholder="Legg inn arbeidssted"
                     aria-label="Legg inn arbeidssted"
                 />
@@ -101,7 +100,6 @@
                     <input
                         id="min-price"
                         type="number"
-                        id="input-budsjett-min"
                         class="input input--container--color"
                         placeholder="Min pris"
                         aria-label="Minimumspris"
@@ -110,7 +108,6 @@
                     <input
                         id="max-price"
                         type="number"
-                        id="input-budsjett-max"
                         class="input input--container--color"
                         placeholder="Max pris"
                         aria-label="Maksimumspris"
@@ -151,13 +148,7 @@
         <section class="map-section" aria-label="Kart">
             <div id="map"></div>
 
-            <section class="best-matches">
-                <div class="best-matches-header">
-                    <h2>Dine beste matcher er:</h2>
-                    <p>Trykk på + ikonet for å legge til i sammenligning · Viser 3 av 12 områder</p>
-                </div>
-                <!-- Hardkodet Nordnes-kort fjernet — erstattes dynamisk av renderResults() i script.js -->
-            </section>
+            <section class="best-matches"></section>
 
         </section>
 
