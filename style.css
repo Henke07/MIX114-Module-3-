@@ -1097,13 +1097,27 @@ select.input {
     font-size: 16px;
 }
 
+/* =========================================================
+   AI BOX
+========================================================= */
+
+.ai-explanation {
+    background: #f8f8f8;
+    border-radius: 22px;
+    padding: 22px;
 }
 
-.ai-explanation h3 {
-    font-size: var(--text-body);
-    font-weight: var(--weight-semibold);
-    color: var(--color-secondary-dark-70);
-    margin-bottom: var(--space-sm);
+.ai-explanation h2 {
+    margin-top: 0;
+    font-size: 24px;
+    margin-bottom: 14px;
+}
+
+.ai-explanation p {
+    line-height: 1.7;
+    color: #444;
+}
+
 }
 
 .pros-cons {
