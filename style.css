@@ -994,13 +994,15 @@ select.input {
     transform: translateY(-1px);
 }
 
+/* =========================================================
+   COMPARISON GRID
+========================================================= */
+
 .compare-grid {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: var(--space-2xl);
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: var(--space-xl) var(--space-2xl) var(--space-4xl);
+    grid-template-columns: repeat(2, 1fr);
+    gap: 32px;
+    margin-bottom: 50px;
 }
 
 .compare-column {
