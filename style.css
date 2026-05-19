@@ -1066,12 +1066,37 @@ select.input {
     margin-top: 32px;
 }
 
-    justify-content: space-between;
+/* =========================================================
+   CHART SECTION
+========================================================= */
+
+.chart-title {
+    font-size: 22px;
+    margin-bottom: 16px;
+    color: #111;
 }
 
-.column-header h2 {
-    font-size: var(--text-h3);
-    font-weight: var(--weight-bold);
+.chart {
+    background: #f7f7f7;
+    border-radius: 20px;
+    min-height: 260px;
+    padding: 16px;
+}
+
+.chart-values {
+    list-style: none;
+    padding: 0;
+    margin-top: 20px;
+}
+
+.chart-values li {
+    display: flex;
+    justify-content: space-between;
+    padding: 12px 0;
+    border-bottom: 1px solid #ececec;
+    font-size: 16px;
+}
+
 }
 
 .ai-explanation h3 {
