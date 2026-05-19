@@ -1203,6 +1203,24 @@ select.input {
     color: #444;
 }
 
+/* =========================================================
+   MAIN CHART
+========================================================= */
+
+.main-comparison-chart {
+    max-width: 1200px;
+    margin: 0 auto 60px;
+    padding: 0 24px;
+}
+
+#comparison-chart {
+    background: white;
+    border-radius: 30px;
+    padding: 30px;
+    min-height: 420px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+}
+
 }
 
 /*==============================
