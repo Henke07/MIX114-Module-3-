@@ -1125,3 +1125,37 @@ select.input {
     line-height: 1.5;
 }
 
+/* =========================================================
+   PROS / CONS
+========================================================= */
+
+.pros-cons {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.pros,
+.cons {
+    background: #f8f8f8;
+    padding: 22px;
+    border-radius: 20px;
+}
+
+.pros h3,
+.cons h3 {
+    margin-top: 0;
+    margin-bottom: 16px;
+}
+
+.pros ul,
+.cons ul {
+    padding-left: 20px;
+}
+
+.pros li,
+.cons li {
+    margin-bottom: 10px;
+    line-height: 1.5;
+}
+
