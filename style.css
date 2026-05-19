@@ -1228,3 +1228,46 @@ select.input {
     transform: translateY(-1px);
 }
 
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 950px) {
+
+    .compare-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .pros-cons {
+        grid-template-columns: 1fr;
+    }
+
+    .compare-title {
+        font-size: 42px;
+    }
+}
+
+@media (max-width: 600px) {
+
+    .compare-title {
+        font-size: 34px;
+    }
+
+    .compare-controls {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .compare-controls select,
+    .compare-controls button {
+        width: 100%;
+    }
+
+    .compare-column {
+        padding: 18px;
+    }
+
+    .column-image {
+        height: 200px;
+    }
+}
