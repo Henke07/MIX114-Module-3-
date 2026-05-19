@@ -919,3 +919,19 @@ select.input {
     opacity: 0.8;
 }
 
+/* =========================================================
+   PAGE TITLE
+========================================================= */
+
+.compare-header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.compare-title {
+    font-size: 56px;
+    font-weight: 800;
+    color: #111;
+    margin: 0;
+}
+
