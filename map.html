@@ -17,12 +17,9 @@
             </a>
 
             <nav class="main-nav" aria-label="Hovednavigasjon">
-                <button type="button" class="header-search-button" id="header-search-button">
-                    <span class="header-search-text">Søk</span>
-                </button>
-                <button type="button" class="header-profile-button" id="header-profile-button" aria-label="Min profil">
-                    <span class="header-profile-icon" aria-hidden="true">👤</span>
-                </button>
+                <a href="index.html" class="nav-link">Hjem</a>
+                <a href="map.html" class="nav-link nav-link--active">Søk</a>
+                <a href="comparison.html" class="nav-link">Sammenlign</a>
             </nav>
         </div>
     </header>
@@ -41,6 +38,7 @@
                     type="text"
                     id="work-location"
                     class="input input--container--color"
+                    id="input-arbeidssted"
                     placeholder="Legg inn arbeidssted"
                     aria-label="Legg inn arbeidssted"
                 />
@@ -86,7 +84,7 @@
             <div class="container-reisevei">
                 <div>
                     <p class="filter-label">Reisevei</p>
-                    <select id="max-reisetid" class="input input--container--color" aria-label="Maks reisetid">
+                    <select id="input-reisetid" class="input input--container--color" aria-label="Maks reisetid">
                         <option value="" disabled selected>Maks tid fra hjem til jobb</option>
                         <option value="15">15 minutter</option>
                         <option value="30">30 minutter</option>
@@ -103,6 +101,7 @@
                     <input
                         id="min-price"
                         type="number"
+                        id="input-budsjett-min"
                         class="input input--container--color"
                         placeholder="Min pris"
                         aria-label="Minimumspris"
@@ -111,6 +110,7 @@
                     <input
                         id="max-price"
                         type="number"
+                        id="input-budsjett-max"
                         class="input input--container--color"
                         placeholder="Max pris"
                         aria-label="Maksimumspris"
@@ -156,52 +156,7 @@
                     <h2>Dine beste matcher er:</h2>
                     <p>Trykk på + ikonet for å legge til i sammenligning · Viser 3 av 12 områder</p>
                 </div>
-                <div class="best-matches-card">
-                    <!-- NB! Fyll inn et bilde fra bydelen her-->
-                    <div class="best-matches-card-img">
-                        <img src="" alt="Bilde av Nordnes">
-                    </div>
-
-                    <div class="best-matches-card-content">
-                        <div class="card-content-title">
-                            <h3>Nordnes</h3>
-                            <div class="card-content-title-details">
-                                <span>🏷 5.2M NOK</span>
-                                <span>🕐 15 min</span>
-                            </div>
-                        </div>
-                        <div class="card-content-attriubutes">
-                            <div class="attributes-pros">
-                                <div class="attributes-pros-title">Fordeler</div>
-                                <ul class="attributes-pros-list">
-                                    <li>Rolig nabolag</li>
-                                    <li>Utsikt</li>
-                                    <li>Svært sentrumsnært</li>
-                                </ul>
-                            </div>
-                            <div class="attributes-cons">
-                                <div class="attributes-cons-title">Ulemper</div>
-                                <ul class="attributes-cons-list">
-                                    <li>Lite kollektiv muligheter</li>
-                                    <li>Dyr parkering</li>
-                                    <li>Én barnehage</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="best-matches-card-buttons">
-                        <div class="card-btn-group">
-                            <button class="card-btn-add" aria-label="Legg til i sammenligning">+</button>
-                            <span class="card-btn-label">Legg til</span>
-                        </div>
-                        <button class="card-btn-heart" aria-label="Lagre">♡</button>
-                        <div class="card-match-badge">
-                            <span class="card-match-percentage">78%</span>
-                            <span>Match</span>
-                        </div>
-                    </div>
-                </div>
+                <!-- Hardkodet Nordnes-kort fjernet — erstattes dynamisk av renderResults() i script.js -->
             </section>
 
         </section>
@@ -224,7 +179,7 @@
             </a>
         </div>
     </footer>
-    
+    <script src="config.js"></script>
     <script src="script.js"></script>
     <script async
     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBFkMoWM4aP5EWSQ1Q2AjPfZwws7PoQ4G0&callback=initMap">

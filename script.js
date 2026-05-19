@@ -136,7 +136,6 @@ function drawAreas(colorFunc, inputareas = null) {
 
 /* ==============================
    Finne reisetid mellom jobb og områder
-============================== */
 
 async function getTravelTimes(
     originLat,
@@ -268,6 +267,154 @@ function formatDuration(seconds) {
     }
 
     return `${minutes} min`;
+   CALL OPENAI
+
+async function callOpenAI(prompt) {
+
+    const response = await fetch("https://api.openai.com/v1/chat/completions", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + API_KEY
+        },
+        body: JSON.stringify({
+            model: "gpt-4o-mini",
+            messages: [
+                {
+                    role: "system",
+                    content: "Du er en norsk boligrådgiver. Svar kun med JSON."
+                },
+                {
+                    role: "user",
+                    content: prompt
+                }
+            ]
+        })
+    });
+
+    const data = await response.json();
+    const text = data.choices[0].message.content;
+    return JSON.parse(text);
+}
+
+/* ==============================
+   BUILD PROMPT
+
+function buildPrompt() {
+
+    const arbeidssted = document.getElementById("input-arbeidssted").value || "ikke oppgitt";
+    const activeTransport = document.querySelector(".fremkomst-icon.active");
+    const transportmiddel = activeTransport ? activeTransport.getAttribute("aria-label") : "ikke oppgitt";
+    const reisetid = document.getElementById("input-reisetid").value || "ikke oppgitt";
+    const budsjettMin = document.getElementById("input-budsjett-min").value || "ikke oppgitt";
+    const budsjettMax = document.getElementById("input-budsjett-max").value || "ikke oppgitt";
+
+    const checkboxes = document.querySelectorAll('input[name="fasiliteter"]:checked');
+    const fasiliteter = Array.from(checkboxes).map(cb => cb.value);
+    const fasiliteterTekst = fasiliteter.length > 0 ? fasiliteter.join(", ") : "ingen valgt";
+
+    const omraadeData = JSON.stringify(areas.map(a => ({
+        name: a.name,
+        data: a.data
+    })));
+
+    return `
+Du er en norsk boligrådgiver med god kjennskap til Bergen og dens nabolag.
+
+Brukeren jobber på: ${arbeidssted}
+Bruk din kunnskap om Bergens geografi til å vurdere hvor nært eller langt hvert nabolag er fra denne adressen, og ta hensyn til dette i rangeringen.
+
+Brukerens øvrige preferanser:
+- Transportmiddel: ${transportmiddel}
+- Maks reisetid: ${reisetid} minutter
+- Budsjett: ${budsjettMin} – ${budsjettMax} NOK
+- Viktige fasiliteter: ${fasiliteterTekst}
+
+Her er nabolagsdataen:
+${omraadeData}
+
+Ranger nabolagene fra best til dårligst match. Ta hensyn til både geografisk nærhet til arbeidsstedet og de øvrige preferansene.
+Svar KUN med et JSON-array i dette formatet, ingen annen tekst:
+[
+  {
+    "name": "Navn på nabolag",
+    "score": 85,
+    "pros": ["Fordel 1", "Fordel 2"],
+    "cons": ["Ulempe 1"],
+    "summary": "Kort forklaring på norsk som nevner reisetid fra arbeidsstedet"
+  }
+]
+    `.trim();
+}
+
+/* ==============================
+   RENDER RESULTS
+
+let lastResults = [];
+
+function renderResults(results) {
+
+    lastResults = results;
+    localStorage.setItem("lastResults", JSON.stringify(results));
+
+    const container = document.querySelector(".best-matches");
+
+    container.innerHTML = `
+        <div class="best-matches-header">
+            <h2>Dine beste matcher er:</h2>
+            <p>Viser ${results.length} områder</p>
+        </div>
+        ${results.map((area, index) => `
+            <div class="best-matches-card">
+
+                <div class="best-matches-card-img">
+                    <img src="" alt="Bilde av ${area.name}">
+                </div>
+
+                <div class="best-matches-card-content">
+                    <div class="card-content-title">
+                        <h3>${area.name}</h3>
+                    </div>
+
+                    <p>${area.summary}</p>
+
+                    <div class="card-content-attriubutes">
+                        <div class="attributes-pros">
+                            <div class="attributes-pros-title">Fordeler</div>
+                            <ul class="attributes-pros-list">
+                                ${area.pros.map(p => `<li>${p}</li>`).join("")}
+                            </ul>
+                        </div>
+                        <div class="attributes-cons">
+                            <div class="attributes-cons-title">Ulemper</div>
+                            <ul class="attributes-cons-list">
+                                ${area.cons.map(c => `<li>${c}</li>`).join("")}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="best-matches-card-buttons">
+                    <div class="card-btn-group">
+                        <button class="card-btn-add" data-index="${index}" aria-label="Legg til i sammenligning">+</button>
+                        <span class="card-btn-label" data-label="${index}">Legg til</span>
+                    </div>
+                    <button class="card-btn-heart" aria-label="Lagre">♡</button>
+                    <div class="card-match-badge">
+                        <span class="card-match-percentage">${area.score}%</span>
+                        <span>Match</span>
+                    </div>
+                </div>
+
+            </div>
+        `).join("")}
+    `;
+
+    container.querySelectorAll(".card-btn-add").forEach(btn => {
+        btn.addEventListener("click", () => {
+            addToComparison(lastResults[btn.dataset.index], btn);
+        });
+    });
 }
 
 /* ==============================
@@ -548,24 +695,80 @@ function generateSummary(area) {
 }
 
 /* ==============================
+   COMPARISON
+============================== */
+
+let selectedAreas = [];
+
+function addToComparison(area, btn) {
+
+    const alreadyAdded = selectedAreas.find(a => a.name === area.name);
+    const label = document.querySelector(`.card-btn-label[data-label="${btn.dataset.index}"]`);
+
+    if (alreadyAdded) {
+        selectedAreas = selectedAreas.filter(a => a.name !== area.name);
+        btn.textContent = "+";
+        btn.classList.remove("card-btn-add--active");
+        if (label) label.textContent = "Legg til";
+    } else {
+        if (selectedAreas.length >= 2) {
+            alert("Du kan bare sammenligne 2 områder. Fjern ett først.");
+            return;
+        }
+        selectedAreas.push(area);
+        btn.textContent = "−";
+        btn.classList.add("card-btn-add--active");
+        if (label) label.textContent = "Fjern";
+    }
+
+    localStorage.setItem("comparisonAreas", JSON.stringify(selectedAreas));
+    updateCompareButton();
+}
+
+function updateCompareButton() {
+
+    let btn = document.getElementById("compare-button");
+
+    if (selectedAreas.length === 0) {
+        if (btn) btn.remove();
+        return;
+    }
+
+    if (!btn) {
+        btn = document.createElement("button");
+        btn.id = "compare-button";
+        btn.className = "btn btn--primary";
+        btn.addEventListener("click", () => {
+            window.location.href = "comparison.html";
+        });
+        document.querySelector(".best-matches").appendChild(btn);
+    }
+
+    btn.textContent = `Sammenlign ${selectedAreas.length}/2 områder →`;
+}
+
+/* ==============================
    EVENTS
 ============================== */
 
 document.addEventListener("DOMContentLoaded", () => {
 
-    const transportButtons =
-        document.querySelectorAll(
-            ".fremkomst-icon"
-        );
+    const savedResults = localStorage.getItem("lastResults");
+    if (savedResults) {
+        renderResults(JSON.parse(savedResults));
+    }
 
-    transportButtons.forEach(button => {
+    const savedComparison = localStorage.getItem("comparisonAreas");
+    if (savedComparison) {
+        selectedAreas = JSON.parse(savedComparison);
+        updateCompareButton();
+    }
 
-        button.addEventListener("click", () => {
-
-            selectedTransport =
-                button.dataset.transport;
-
-            console.log(selectedTransport);
+    // Transport buttons
+    document.querySelectorAll(".fremkomst-icon").forEach(btn => {
+        btn.addEventListener("click", () => {
+            document.querySelectorAll(".fremkomst-icon").forEach(b => b.classList.remove("active"));
+            btn.classList.add("active");
         });
     });
 
@@ -655,6 +858,26 @@ document.addEventListener("DOMContentLoaded", () => {
 
             }
         );
+        searchButton.addEventListener("click", async () => {
+            applyFilter();
+
+            selectedAreas = [];
+            localStorage.removeItem("comparisonAreas");
+            const existingBtn = document.getElementById("compare-button");
+            if (existingBtn) existingBtn.remove();
+
+            const container = document.querySelector(".best-matches");
+            container.innerHTML = `
+                <div class="loading-state">
+                    <span class="loading-spinner" aria-hidden="true"></span>
+                    <p>Finner dine beste matcher...</p>
+                </div>
+            `;
+
+            const prompt = buildPrompt();
+            const results = await callOpenAI(prompt);
+            renderResults(results);
+        });
     }
 
     // Nullstill filter
