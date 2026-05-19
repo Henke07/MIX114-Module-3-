@@ -880,3 +880,19 @@ select.input {
     box-shadow: var(--shadow);
     background-color: #ddd;
 }
+/* =========================================================
+   COMPARISON PAGE
+========================================================= */
+
+.comparison-page {
+    background-color: #f5f3ef;
+    min-height: 100vh;
+}
+
+/* Main layout */
+#main-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 50px 24px;
+}
+
