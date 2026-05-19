@@ -900,20 +900,22 @@ select.input {
     line-height: 1.6;
 }
 
-/*==============================
-        COMPARISON PAGE
-===============================*/
+/* =========================================================
+   COMPARISON PAGE
+========================================================= */
 
-.compare-header {
-    padding: var(--space-3xl) var(--space-2xl) var(--space-xl);
+.comparison-page {
+    background-color: #f5f3ef;
+    min-height: 100vh;
+}
+
+/* Main layout */
+#main-content {
     max-width: 1200px;
     margin: 0 auto;
+    padding: 50px 24px;
 }
 
-.compare-title {
-    font-size: var(--text-h2);
-    font-weight: var(--weight-bold);
-}
 
 .back-nav {
     padding: var(--space-xl) var(--space-2xl) 0;
