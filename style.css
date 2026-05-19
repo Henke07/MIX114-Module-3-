@@ -1097,3 +1097,31 @@ select.input {
     line-height: 1.7;
     color: #444;
 }
+
+/* =========================================================
+   COMMUTE SECTION
+========================================================= */
+
+.commute-timeline h2 {
+    margin-bottom: 16px;
+}
+
+.commute-total-time {
+    display: inline-block;
+    background: #eef8f1;
+    color: #2d7050;
+    padding: 10px 16px;
+    border-radius: 999px;
+    font-weight: 700;
+    margin-bottom: 20px;
+}
+
+.route-timeline {
+    padding-left: 20px;
+}
+
+.route-timeline li {
+    margin-bottom: 12px;
+    line-height: 1.5;
+}
+
