@@ -4,33 +4,24 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sammenlign områder</title>
-
     <link rel="stylesheet" href="style.css">
-    <script src="https://code.highcharts.com/highcharts.js"></script>
-    <script src="https://code.highcharts.com/highcharts-more.js"></script>
 </head>
 
-<body class="compariosn-page">
+<body class="comparison-page">
 
-    <!--Header til alle sidene-->
     <header class="site-header" role="banner">
         <div class="header-content">
             <a href="index.html" class="logo" aria-label="Reisevei — gå til forsiden">
                 <span class="logo-icon" aria-hidden="true">🏘️</span>
                 <span class="logo-text">Reisevei</span>
             </a>
-
             <nav class="main-nav" aria-label="Hovednavigasjon">
-                <button type="button" class="header-search-button" id="header-search-button">
-                    <span class="header-search-text">Søk</span>
-                </button>
-                <button type="button" class="header-profile-button" id="header-profile-button" aria-label="Min profil">
-                    <span class="header-profile-icon" aria-hidden="true">👤</span>
-                </button>
+                <a href="index.html" class="nav-link">Hjem</a>
+                <a href="map.html" class="nav-link">Søk</a>
+                <a href="comparison.html" class="nav-link nav-link--active">Sammenlign</a>
             </nav>
         </div>
     </header>
-
 
     <main id="main-content">
 
@@ -127,21 +118,13 @@
 
     </section>
 
-    <!--Ai forklaring-->
-    <section class="ai-recommendation">
-        <h2>
-            ✦ AI Anbefaler:
-            <span id="recommended-area"></span>
-        </h2>
-        <p id="recommendation-text"></p>
-    </section>
+        <header class="compare-header">
+            <h1 class="compare-title">Sammenlign områder</h1>
+        </header>
 
-    <!-- CTA -->
-    <div class="home-cta-wrapper">
-        <a href="index.html" class="secondary-button">
-            Tilbake til forsiden
-        </a>
-    </div>
+        <section class="compare-grid" id="compare-grid">
+            <!-- Filled dynamically by comparison.js -->
+        </section>
 
     </main>
 
@@ -163,7 +146,8 @@
             </a>
         </div>
     </footer>
-    
-    <script src="script-comparison.js"></script>
+
+    <script src="comparison.js"></script>
+
 </body>
 </html>
