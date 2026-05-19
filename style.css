@@ -1005,18 +1005,17 @@ select.input {
     margin-bottom: 50px;
 }
 
+/* =========================================================
+   CARD
+========================================================= */
+
 .compare-column {
-    background-color: var(--color-white);
-    border-radius: var(--radius-xl);
-    box-shadow: var(--shadow);
-    padding: var(--space-2xl);
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-xl);
+    background: white;
+    border-radius: 30px;
+    padding: 24px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
 }
 
-.column-header {
-    display: flex;
     align-items: center;
     justify-content: space-between;
 }
