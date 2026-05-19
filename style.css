@@ -985,3 +985,14 @@ select.input {
     margin-bottom: 50px;
 }
 
+/* =========================================================
+   CARD
+========================================================= */
+
+.compare-column {
+    background: white;
+    border-radius: 30px;
+    padding: 24px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+}
+
