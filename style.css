@@ -916,20 +916,29 @@ select.input {
     padding: 50px 24px;
 }
 
+/* =========================================================
+   BACK BUTTON
+========================================================= */
 
 .back-nav {
-    padding: var(--space-xl) var(--space-2xl) 0;
-    max-width: 1200px;
-    margin: 0 auto;
+    margin-bottom: 32px;
 }
 
 .back-link {
     display: inline-flex;
     align-items: center;
-    gap: var(--space-sm);
+    gap: 8px;
     text-decoration: none;
-    color: var(--color-primary);
-    font-weight: var(--weight-semibold);
+    color: #2d7050;
+    font-weight: 700;
+    font-size: 18px;
+    transition: 0.2s ease;
+}
+
+.back-link:hover {
+    opacity: 0.8;
+}
+
 }
 
 .compare-grid {
