@@ -1228,6 +1228,97 @@ select.input {
 }
 
 /*==============================
+        COMMUTE TIMELINE
+===============================*/
+
+.commute-timeline {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-lg);
+}
+
+.commute-timeline h2 {
+    font-size: var(--text-body);
+    font-weight: var(--weight-semibold);
+    color: var(--color-black);
+}
+
+.commute-total-time {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-xs);
+    background-color: var(--color-primary-light-20);
+    color: var(--color-primary);
+    border-radius: var(--radius-full);
+    padding: var(--space-xs) var(--space-md);
+    font-size: var(--text-body-s);
+    font-weight: var(--weight-semibold);
+    align-self: flex-start;
+}
+
+.route-timeline {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    padding-left: var(--space-xl);
+    position: relative;
+}
+
+.route-timeline::before {
+    content: '';
+    position: absolute;
+    left: 7px;
+    top: 10px;
+    bottom: 10px;
+    width: 2px;
+    background-color: var(--color-borders);
+}
+
+.route-timeline li {
+    position: relative;
+    padding: var(--space-sm) 0 var(--space-sm) var(--space-lg);
+    font-size: var(--text-body-s);
+    color: var(--color-black);
+    line-height: 1.5;
+}
+
+.route-timeline li::before {
+    content: '';
+    position: absolute;
+    left: -14px;
+    top: 10px;
+    width: 10px;
+    height: 10px;
+    border-radius: var(--radius-full);
+    background-color: var(--color-primary);   /* standard = gange (grønn) */
+    border: 2px solid var(--color-white);
+    outline: 2px solid var(--color-primary);
+    z-index: 1;
+}
+
+/* Farget sirkel per transportmodus */
+.route-timeline li[data-type="bus"]::before {
+    background-color: var(--color-secondary-dark-60);  /* lilla */
+    outline-color: var(--color-secondary-dark-60);
+}
+.route-timeline li[data-type="tram"]::before {
+    background-color: var(--color-secondary-dark-60);  /* lilla */
+    outline-color: var(--color-secondary-dark-60);
+}
+.route-timeline li[data-type="transfer"]::before {
+    background-color: var(--color-muted-grey);         /* grå */
+    outline-color: var(--color-muted-grey);
+}
+
+/* Emoji-ikon foran teksten */
+.route-icon {
+    display: inline-block;
+    width: 1.4em;          /* fast bredde → all tekst starter på linje */
+    text-align: center;
+}
+
+/*==============================
         GOOGLE MAP
 ===============================*/
 
