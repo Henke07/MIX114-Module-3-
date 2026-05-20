@@ -1434,6 +1434,24 @@ select.input {
 }
 
 /*==============================
+        MAIN COMPARISON CHART
+===============================*/
+
+.main-comparison-chart {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 var(--space-2xl) var(--space-4xl);
+}
+
+#comparison-chart {
+    background-color: var(--color-white);
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow);
+    padding: var(--space-2xl);
+    min-height: 200px;
+}
+
+/*==============================
         GOOGLE MAP
 ===============================*/
 
