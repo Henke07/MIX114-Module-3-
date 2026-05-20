@@ -185,13 +185,16 @@ body {
 
 .hero {
     position: relative;
-    min-height: calc(100vh - 64px);
+    min-height: 90vh;
+
     display: flex;
     flex-direction: column;
-    gap: var(--space-4xl);
     align-items: center;
-    justify-content: center;
-    padding: var(--space-4xl) var(--space-2xl);
+    justify-content: flex-start;
+
+    gap: var(--space-4xl);
+
+    padding: 90px var(--space-2xl) 80px;
 }
 
 .hero-content {
@@ -240,10 +243,10 @@ body {
 }
 
 .match-image {
-    width: 120px;
-    height: 80px;
+    width: 180px;
+    height: 120px;
     object-fit: cover;
-    border-radius: var(--radius-lg);
+    border-radius: var(--radius-xl);
 }
 
 .match-image-caption {
@@ -276,7 +279,7 @@ body {
 
 .scroll-text {
     position: absolute;
-    bottom: var(--space-xl);
+    bottom: 40px;
     left: 50%;
     transform: translateX(-50%);
     display: flex;
