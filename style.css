@@ -1202,6 +1202,32 @@ select.input {
 }
 
 /*==============================
+        AI EXPLANATION
+===============================*/
+
+.ai-explanation {
+    background-color: var(--color-primary-light-10);
+    border: 1px solid var(--color-primary-light-30);
+    border-radius: var(--radius-lg);
+    padding: var(--space-xl);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+}
+
+.ai-explanation h2 {
+    font-size: var(--text-body);
+    font-weight: var(--weight-semibold);
+    color: var(--color-primary);
+}
+
+.ai-explanation p {
+    font-size: var(--text-body);
+    color: var(--color-black);
+    line-height: 1.6;
+}
+
+/*==============================
         GOOGLE MAP
 ===============================*/
 
