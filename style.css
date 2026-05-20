@@ -97,6 +97,12 @@ body {
     color: var(--color-black);
 }
 
+ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
 /*==============================
         LAYOUT (Header)
 ===============================*/
@@ -1002,6 +1008,59 @@ select.input {
 
 @keyframes spin {
     to { transform: rotate(360deg); }
+}
+
+/*==============================
+        COMPARISON CONTROLS
+===============================*/
+
+.compare-controls {
+    display: flex;
+    align-items: center;
+    gap: var(--space-lg);
+    padding: 0 var(--space-2xl) var(--space-xl);
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.compare-controls select {
+    flex: 1;
+    padding: var(--space-md) var(--space-4xl) var(--space-md) var(--space-lg);
+    border: 1.5px solid var(--color-primary-light-50);
+    border-radius: var(--radius-regular);
+    font-family: var(--font-body);
+    font-size: var(--text-body);
+    background-color: var(--color-white);
+    color: var(--color-black);
+    cursor: pointer;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%232F6B4F' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right var(--space-lg) center;
+    outline: none;
+}
+
+.compare-controls select:focus {
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px var(--color-primary-light-20);
+}
+
+#compare-btn {
+    font-family: var(--font-body);
+    font-size: var(--text-body);
+    font-weight: var(--weight-semibold);
+    background-color: var(--color-primary);
+    color: var(--color-white);
+    border: none;
+    border-radius: var(--radius-regular);
+    padding: var(--space-md) var(--space-xl);
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background-color 0.15s ease;
+}
+
+#compare-btn:hover {
+    background-color: var(--color-primary-light-50);
 }
 
 /*==============================
