@@ -11,9 +11,9 @@
     <!--Header til alle sidene-->
     <header class="site-header" role="banner">
         <div class="header-content">
-            <a href="index.html" class="logo" aria-label="Reisevei — gå til forsiden">
-                <span class="logo-icon" aria-hidden="true">🏘️</span>
-                <span class="logo-text">Reisevei</span>
+            <a href="index.html" class="logo" aria-label="Hjem og Jobb — gå til forsiden">
+                <span class="logo-icon" aria-hidden="true">🏠</span>
+                <span class="logo-text">Hjem<span class="logo-amp">&amp;</span>Jobb</span>
             </a>
 
             <nav class="main-nav" aria-label="Hovednavigasjon">
@@ -36,8 +36,8 @@
             <div class="container-arbeidssted">
                 <input
                     type="text"
+                    id="work-location"
                     class="input input--container--color"
-                    id="input-arbeidssted"
                     placeholder="Legg inn arbeidssted"
                     aria-label="Legg inn arbeidssted"
                 />
@@ -45,19 +45,39 @@
 
             <!-- Fremkomstmiddel -->
             <div>
-                <p class="filter-label">Velg ditt fremkomstmiddel</p>
-                <div class="container-options">
-                    <button type="button" class="fremkomst-icon" aria-label="Buss">
-                        <span aria-hidden="true">Buss</span>
-                    </button>
-                    <button type="button" class="fremkomst-icon" aria-label="Bil">
-                        <span aria-hidden="true">Bil</span>
-                    </button>
-                    <button type="button" class="fremkomst-icon" aria-label="Gange">
-                        <span aria-hidden="true">Gå</span>
-                    </button>
-                </div>
-            </div>
+    <p class="filter-label">Velg ditt fremkomstmiddel</p>
+
+    <div class="container-options">
+
+        <label class="fremkomst-option">
+            <input
+                type="radio"
+                name="transport"
+                value="buss"
+            />
+            <span>Buss</span>
+        </label>
+
+        <label class="fremkomst-option">
+            <input
+                type="radio"
+                name="transport"
+                value="bil"
+            />
+            <span>Bil</span>
+        </label>
+
+        <label class="fremkomst-option">
+            <input
+                type="radio"
+                name="transport"
+                value="gå"
+            />
+            <span>Gå</span>
+        </label>
+
+    </div>
+</div>
 
             <!-- Reisevei -->
             <div class="container-reisevei">
@@ -78,16 +98,16 @@
                 <p class="filter-label">Budsjett</p>
                 <div class="budjsett-rekke">
                     <input
+                        id="min-price"
                         type="number"
-                        id="input-budsjett-min"
                         class="input input--container--color"
                         placeholder="Min pris"
                         aria-label="Minimumspris"
                     />
                     <span class="budget-separator" aria-hidden="true">–</span>
                     <input
+                        id="max-price"
                         type="number"
-                        id="input-budsjett-max"
                         class="input input--container--color"
                         placeholder="Max pris"
                         aria-label="Maksimumspris"
@@ -128,13 +148,7 @@
         <section class="map-section" aria-label="Kart">
             <div id="map"></div>
 
-            <section class="best-matches">
-                <div class="best-matches-header">
-                    <h2>Dine beste matcher er:</h2>
-                    <p>Trykk på + ikonet for å legge til i sammenligning · Viser 3 av 12 områder</p>
-                </div>
-                <!-- Hardkodet Nordnes-kort fjernet — erstattes dynamisk av renderResults() i script.js -->
-            </section>
+            <section class="best-matches"></section>
 
         </section>
 
@@ -151,7 +165,7 @@
                 <li class="footer-link-item"><a href="#privacy" class="footer-link">Personvern</a></li>
             </ul>
             <a href="index.html" class="footer-logo">
-                <span class="footer-logo-mark" aria-hidden="true">🏘️</span>
+                <span class="footer-logo-mark" aria-hidden="true">✓</span>
                 <span class="footer-logo-text">Reisevei</span>
             </a>
         </div>
