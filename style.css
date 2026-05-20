@@ -1117,6 +1117,91 @@ select.input {
 }
 
 /*==============================
+        CHART SECTION
+===============================*/
+
+.chart-section {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+    background-color: var(--color-primary-light-10);
+    border-radius: var(--radius-lg);
+    padding: var(--space-xl);
+}
+
+.chart-title {
+    font-size: var(--text-body);
+    font-weight: var(--weight-semibold);
+    color: var(--color-black);
+}
+
+.chart {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);       /* mer luft mellom tykkere søyler */
+}
+
+.chart-bar-row {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+}
+
+.chart-bar-label {
+    font-size: var(--text-body-s);
+    font-weight: var(--weight-medium);  /* litt tykkere tekst, lettere å lese */
+    color: var(--color-muted-grey);
+    width: 72px;
+    flex-shrink: 0;
+}
+
+.chart-bar-track {
+    flex: 1;
+    height: 20px;               /* opp fra 10px — dobbelt så tykk */
+    background-color: var(--color-borders);
+    border-radius: var(--radius-full);
+    overflow: hidden;
+}
+
+.chart-bar-fill {
+    height: 100%;
+    background-color: var(--color-primary);   /* standard-farge (grønn) */
+    border-radius: var(--radius-full);
+    transition: width 0.4s ease;
+}
+
+/* Kostnad → lilla */
+.chart-bar-fill--cost {
+    background-color: var(--color-secondary-dark-60);
+}
+
+/* Reisetid → grønn */
+.chart-bar-fill--time {
+    background-color: var(--color-primary);
+}
+
+.chart-values {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xs);
+    border-top: 1px solid var(--color-borders);
+    padding-top: var(--space-md);
+}
+
+.chart-values li {
+    display: flex;
+    justify-content: space-between;
+    font-size: var(--text-body-s);
+    color: var(--color-muted-grey);
+}
+
+.chart-values li span:last-child {
+    font-weight: var(--weight-semibold);
+    color: var(--color-black);
+}
+
+/*==============================
         GOOGLE MAP
 ===============================*/
 
