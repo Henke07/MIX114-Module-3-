@@ -97,6 +97,12 @@ body {
     color: var(--color-black);
 }
 
+ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
 /*==============================
         LAYOUT (Header)
 ===============================*/
@@ -1005,6 +1011,447 @@ select.input {
 
 @keyframes spin {
     to { transform: rotate(360deg); }
+}
+
+/*==============================
+        COMPARISON CONTROLS
+===============================*/
+
+.compare-controls {
+    display: flex;
+    align-items: center;
+    gap: var(--space-lg);
+    padding: 0 var(--space-2xl) var(--space-xl);
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.compare-controls select {
+    flex: 1;
+    padding: var(--space-md) var(--space-4xl) var(--space-md) var(--space-lg);
+    border: 1.5px solid var(--color-primary-light-50);
+    border-radius: var(--radius-regular);
+    font-family: var(--font-body);
+    font-size: var(--text-body);
+    background-color: var(--color-white);
+    color: var(--color-black);
+    cursor: pointer;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%232F6B4F' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right var(--space-lg) center;
+    outline: none;
+}
+
+.compare-controls select:focus {
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px var(--color-primary-light-20);
+}
+
+#compare-btn {
+    font-family: var(--font-body);
+    font-size: var(--text-body);
+    font-weight: var(--weight-semibold);
+    background-color: var(--color-primary);
+    color: var(--color-white);
+    border: none;
+    border-radius: var(--radius-regular);
+    padding: var(--space-md) var(--space-xl);
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background-color 0.15s ease;
+}
+
+#compare-btn:hover {
+    background-color: var(--color-primary-light-50);
+}
+
+/*==============================
+        COMPARISON COLUMN HEADER
+===============================*/
+
+.compare-column .column-header {
+    position: relative;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+    justify-content: flex-start;
+}
+
+.column-image-wrapper {
+    position: relative;
+    width: 100%;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    aspect-ratio: 16 / 9;
+    background-color: var(--color-borders);
+}
+
+.column-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.column-image-title {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: var(--space-2xl) var(--space-md) var(--space-md);
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.65), transparent);
+    color: var(--color-white);
+    font-size: var(--text-h4);
+    font-weight: var(--weight-bold);
+}
+
+.match-badge {
+    position: absolute;
+    top: var(--space-md);
+    right: var(--space-md);
+    background-color: var(--color-primary);
+    color: var(--color-white);
+    border-radius: var(--radius-full);
+    padding: var(--space-xs) var(--space-md);
+    font-size: var(--text-body-s);
+    font-weight: var(--weight-bold);
+    z-index: 2;
+}
+
+/*==============================
+        CHART SECTION
+===============================*/
+
+.chart-section {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+    background-color: var(--color-primary-light-10);
+    border-radius: var(--radius-lg);
+    padding: var(--space-xl);
+}
+
+.chart-title {
+    font-size: var(--text-body);
+    font-weight: var(--weight-semibold);
+    color: var(--color-black);
+}
+
+.chart {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);       /* mer luft mellom tykkere søyler */
+}
+
+.chart-bar-row {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+}
+
+.chart-bar-label {
+    font-size: var(--text-body-s);
+    font-weight: var(--weight-medium);  /* litt tykkere tekst, lettere å lese */
+    color: var(--color-muted-grey);
+    width: 72px;
+    flex-shrink: 0;
+}
+
+.chart-bar-track {
+    flex: 1;
+    height: 20px;               /* opp fra 10px — dobbelt så tykk */
+    background-color: var(--color-borders);
+    border-radius: var(--radius-full);
+    overflow: hidden;
+}
+
+.chart-bar-fill {
+    height: 100%;
+    background-color: var(--color-primary);   /* standard-farge (grønn) */
+    border-radius: var(--radius-full);
+    transition: width 0.4s ease;
+}
+
+/* Kostnad → lilla */
+.chart-bar-fill--cost {
+    background-color: var(--color-secondary-dark-60);
+}
+
+/* Reisetid → grønn */
+.chart-bar-fill--time {
+    background-color: var(--color-primary);
+}
+
+.chart-values {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xs);
+    border-top: 1px solid var(--color-borders);
+    padding-top: var(--space-md);
+}
+
+.chart-values li {
+    display: flex;
+    justify-content: space-between;
+    font-size: var(--text-body-s);
+    color: var(--color-muted-grey);
+}
+
+.chart-values li span:last-child {
+    font-weight: var(--weight-semibold);
+    color: var(--color-black);
+}
+
+/*==============================
+        AI EXPLANATION
+===============================*/
+
+.ai-explanation {
+    background-color: var(--color-primary-light-10);
+    border: 1px solid var(--color-primary-light-30);
+    border-radius: var(--radius-lg);
+    padding: var(--space-xl);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+}
+
+.ai-explanation h2 {
+    font-size: var(--text-body);
+    font-weight: var(--weight-semibold);
+    color: var(--color-primary);
+}
+
+.ai-explanation p {
+    font-size: var(--text-body);
+    color: var(--color-black);
+    line-height: 1.6;
+}
+
+/*==============================
+        COMMUTE TIMELINE
+===============================*/
+
+.commute-timeline {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-lg);
+}
+
+.commute-timeline h2 {
+    font-size: var(--text-body);
+    font-weight: var(--weight-semibold);
+    color: var(--color-black);
+}
+
+.commute-total-time {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-xs);
+    background-color: var(--color-primary-light-20);
+    color: var(--color-primary);
+    border-radius: var(--radius-full);
+    padding: var(--space-xs) var(--space-md);
+    font-size: var(--text-body-s);
+    font-weight: var(--weight-semibold);
+    align-self: flex-start;
+}
+
+.route-timeline {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    padding-left: var(--space-xl);
+    position: relative;
+}
+
+.route-timeline::before {
+    content: '';
+    position: absolute;
+    left: 7px;
+    top: 10px;
+    bottom: 10px;
+    width: 2px;
+    background-color: var(--color-borders);
+}
+
+.route-timeline li {
+    position: relative;
+    padding: var(--space-sm) 0 var(--space-sm) var(--space-lg);
+    font-size: var(--text-body-s);
+    color: var(--color-black);
+    line-height: 1.5;
+}
+
+.route-timeline li::before {
+    content: '';
+    position: absolute;
+    left: -14px;
+    top: 10px;
+    width: 10px;
+    height: 10px;
+    border-radius: var(--radius-full);
+    background-color: var(--color-primary);   /* standard = gange (grønn) */
+    border: 2px solid var(--color-white);
+    outline: 2px solid var(--color-primary);
+    z-index: 1;
+}
+
+/* Farget sirkel per transportmodus */
+.route-timeline li[data-type="bus"]::before {
+    background-color: var(--color-secondary-dark-60);  /* lilla */
+    outline-color: var(--color-secondary-dark-60);
+}
+.route-timeline li[data-type="tram"]::before {
+    background-color: var(--color-secondary-dark-60);  /* lilla */
+    outline-color: var(--color-secondary-dark-60);
+}
+.route-timeline li[data-type="transfer"]::before {
+    background-color: var(--color-muted-grey);         /* grå */
+    outline-color: var(--color-muted-grey);
+}
+
+/* Emoji-ikon foran teksten */
+.route-icon {
+    display: inline-block;
+    width: 1.4em;          /* fast bredde → all tekst starter på linje */
+    text-align: center;
+}
+
+/*==============================
+        PROS / CONS
+===============================*/
+
+.pros-cons .pros h3,
+.pros-cons .cons h3 {
+    font-size: var(--text-body-s);
+    font-weight: var(--weight-semibold);
+    padding-left: var(--space-sm);
+    margin-bottom: var(--space-sm);
+}
+
+.pros-cons .pros h3 {
+    color: var(--color-primary);
+    border-left: 3px solid var(--color-primary);
+}
+
+.pros-cons .cons h3 {
+    color: var(--color-muted-grey);
+    border-left: 3px solid var(--color-borders);
+}
+
+.pros-cons ul {
+    list-style: none;      /* fjerner standard kulepunkter */
+    padding-left: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xs);
+    font-size: var(--text-body-s);
+}
+
+/* Hvert li trenger plass til ikonet til venstre */
+.pros li,
+.cons li {
+    position: relative;
+    padding-left: var(--space-xl);  /* 24px — plass til ✓ / ✕ */
+}
+
+/* Grønt hake for fordeler */
+.pros li::before {
+    content: "✓";
+    position: absolute;
+    left: 0;
+    font-weight: var(--weight-bold);
+    color: var(--color-success);
+}
+
+/* Rødt kryss for ulemper */
+.cons li::before {
+    content: "✕";
+    position: absolute;
+    left: 0;
+    font-weight: var(--weight-bold);
+    color: var(--color-error);
+}
+
+/*==============================
+        AI RECOMMENDATION
+===============================*/
+
+.ai-recommendation {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 var(--space-2xl) var(--space-4xl);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-xl);
+}
+
+.ai-recommendation-content {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2xl);
+    background-color: var(--color-primary);
+    color: var(--color-white);
+    border-radius: var(--radius-xl);
+    padding: var(--space-3xl);
+    width: 100%;
+}
+
+.ai-recommendation-icon {
+    font-size: 3rem;
+    line-height: 1;
+    flex-shrink: 0;
+}
+
+.ai-recommendation-label {
+    font-size: var(--text-body-s);
+    font-weight: var(--weight-semibold);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    opacity: 0.7;
+    margin-bottom: var(--space-xs);
+}
+
+.ai-recommendation-title {
+    font-size: var(--text-h2);
+    font-weight: var(--weight-bold);
+    margin-bottom: var(--space-sm);
+}
+
+.ai-recommendation-desc {
+    font-size: var(--text-body);
+    line-height: 1.6;
+    opacity: 0.9;
+    max-width: 560px;
+}
+
+/* Større knapp-variant brukt under anbefalingen */
+.btn--lg {
+    font-size: var(--text-h5);
+    padding: var(--space-lg) var(--space-3xl);
+}
+
+/*==============================
+        MAIN COMPARISON CHART
+===============================*/
+
+.main-comparison-chart {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 var(--space-2xl) var(--space-4xl);
+}
+
+#comparison-chart {
+    background-color: var(--color-white);
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow);
+    padding: var(--space-2xl);
+    min-height: 200px;
 }
 
 /*==============================
