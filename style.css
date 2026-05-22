@@ -900,83 +900,397 @@ select.input {
     line-height: 1.6;
 }
 
-/*==============================
-        COMPARISON PAGE
-===============================*/
+/* =========================================================
+   COMPARISON PAGE
+========================================================= */
 
-.compare-header {
-    padding: var(--space-3xl) var(--space-2xl) var(--space-xl);
+.comparison-page {
+    background-color: #f5f3ef;
+    min-height: 100vh;
+}
+
+/* Main layout */
+#main-content {
     max-width: 1200px;
     margin: 0 auto;
+    padding: 50px 24px;
 }
 
-.compare-title {
-    font-size: var(--text-h2);
-    font-weight: var(--weight-bold);
-}
+/* =========================================================
+   BACK BUTTON
+========================================================= */
 
 .back-nav {
-    padding: var(--space-xl) var(--space-2xl) 0;
-    max-width: 1200px;
-    margin: 0 auto;
+    margin-bottom: 32px;
 }
 
 .back-link {
     display: inline-flex;
     align-items: center;
-    gap: var(--space-sm);
+    gap: 8px;
     text-decoration: none;
-    color: var(--color-primary);
-    font-weight: var(--weight-semibold);
+    color: #2d7050;
+    font-weight: 700;
+    font-size: 18px;
+    transition: 0.2s ease;
 }
+
+.back-link:hover {
+    opacity: 0.8;
+}
+
+/* =========================================================
+   PAGE TITLE
+========================================================= */
+
+.compare-header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.compare-title {
+    font-size: 56px;
+    font-weight: 800;
+    color: #111;
+    margin: 0;
+}
+
+/* =========================================================
+   SELECT CONTROLS
+========================================================= */
+
+.compare-controls {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin-bottom: 50px;
+}
+
+.compare-controls select {
+    padding: 14px 18px;
+    border-radius: 16px;
+    border: 2px solid #2d7050;
+    background: white;
+    font-size: 16px;
+    min-width: 200px;
+    outline: none;
+}
+
+.compare-controls button {
+    padding: 14px 22px;
+    border-radius: 16px;
+    border: none;
+    background: #2d7050;
+    color: white;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.compare-controls button:hover {
+    background: #24583f;
+    transform: translateY(-1px);
+}
+
+/* =========================================================
+   COMPARISON GRID
+========================================================= */
 
 .compare-grid {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: var(--space-2xl);
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: var(--space-xl) var(--space-2xl) var(--space-4xl);
+    grid-template-columns: repeat(2, 1fr);
+    gap: 32px;
+    margin-bottom: 50px;
 }
+
+/* =========================================================
+   CARD
+========================================================= */
 
 .compare-column {
-    background-color: var(--color-white);
-    border-radius: var(--radius-xl);
-    box-shadow: var(--shadow);
-    padding: var(--space-2xl);
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-xl);
+    background: white;
+    border-radius: 30px;
+    padding: 24px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
 }
 
-.column-header {
-    display: flex;
+/* =========================================================
+   IMAGE
+========================================================= */
+
+.column-image-wrapper {
+    position: relative;
+}
+
+.column-image {
+    width: 100%;
+    height: 240px;
+    object-fit: cover;
+    border-radius: 22px;
+}
+
+.column-image-title {
+    font-size: 30px;
+    font-weight: 800;
+    margin-top: 16px;
+    color: #111;
+}
+
+/* =========================================================
+   MATCH BADGE
+========================================================= */
+
+.match-badge {
+    display: inline-flex;
     align-items: center;
+    justify-content: center;
+    margin-top: 14px;
+    padding: 10px 16px;
+    border-radius: 999px;
+    background: #dff5e7;
+    color: #2d7050;
+    font-weight: 700;
+    font-size: 15px;
+}
+
+/* =========================================================
+   SECTIONS
+========================================================= */
+
+.chart-section,
+.ai-explanation,
+.commute-timeline,
+.pros-cons {
+    margin-top: 32px;
+}
+
+/* =========================================================
+   CHART SECTION
+========================================================= */
+
+.chart-title {
+    font-size: 22px;
+    margin-bottom: 16px;
+    color: #111;
+}
+
+.chart {
+    background: #f7f7f7;
+    border-radius: 20px;
+    min-height: 260px;
+    padding: 16px;
+}
+
+.chart-values {
+    list-style: none;
+    padding: 0;
+    margin-top: 20px;
+}
+
+.chart-values li {
+    display: flex;
     justify-content: space-between;
+    padding: 12px 0;
+    border-bottom: 1px solid #ececec;
+    font-size: 16px;
 }
 
-.column-header h2 {
-    font-size: var(--text-h3);
-    font-weight: var(--weight-bold);
+/* =========================================================
+   AI BOX
+========================================================= */
+
+.ai-explanation {
+    background: #f8f8f8;
+    border-radius: 22px;
+    padding: 22px;
 }
 
-.ai-explanation h3 {
-    font-size: var(--text-body);
-    font-weight: var(--weight-semibold);
-    color: var(--color-secondary-dark-70);
-    margin-bottom: var(--space-sm);
+.ai-explanation h2 {
+    margin-top: 0;
+    font-size: 24px;
+    margin-bottom: 14px;
 }
+
+.ai-explanation p {
+    line-height: 1.7;
+    color: #444;
+}
+
+/* =========================================================
+   COMMUTE SECTION
+========================================================= */
+
+.commute-timeline h2 {
+    margin-bottom: 16px;
+}
+
+.commute-total-time {
+    display: inline-block;
+    background: #eef8f1;
+    color: #2d7050;
+    padding: 10px 16px;
+    border-radius: 999px;
+    font-weight: 700;
+    margin-bottom: 20px;
+}
+
+.route-timeline {
+    padding-left: 20px;
+}
+
+.route-timeline li {
+    margin-bottom: 12px;
+    line-height: 1.5;
+}
+
+/* =========================================================
+   PROS / CONS
+========================================================= */
 
 .pros-cons {
-    display: flex;
-    gap: var(--space-xl);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
 }
 
-.pros-cons .pros,
-.pros-cons .cons {
-    flex: 1;
+.pros,
+.cons {
+    background: #f8f8f8;
+    padding: 22px;
+    border-radius: 20px;
 }
 
+.pros h3,
+.cons h3 {
+    margin-top: 0;
+    margin-bottom: 16px;
+}
+
+.pros ul,
+.cons ul {
+    padding-left: 20px;
+}
+
+.pros li,
+.cons li {
+    margin-bottom: 10px;
+    line-height: 1.5;
+}
+
+/* =========================================================
+   AI RECOMMENDATION
+========================================================= */
+
+.ai-recommendation {
+    background: white;
+    border-radius: 30px;
+    padding: 32px;
+    margin-bottom: 50px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+}
+
+.ai-recommendation h2 {
+    font-size: 34px;
+    margin-top: 0;
+    margin-bottom: 18px;
+}
+
+.ai-recommendation p {
+    line-height: 1.7;
+    font-size: 17px;
+    color: #444;
+}
+
+/* =========================================================
+   MAIN CHART
+========================================================= */
+
+.main-comparison-chart {
+    max-width: 1200px;
+    margin: 0 auto 60px;
+    padding: 0 24px;
+}
+
+#comparison-chart {
+    background: white;
+    border-radius: 30px;
+    padding: 30px;
+    min-height: 420px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+}
+
+/* =========================================================
+   CTA BUTTON
+========================================================= */
+
+.home-cta-wrapper {
+    text-align: center;
+    margin-bottom: 60px;
+}
+
+.secondary-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px 30px;
+    border-radius: 999px;
+    background: #2d7050;
+    color: white;
+    text-decoration: none;
+    font-weight: 700;
+    transition: 0.2s ease;
+}
+
+.secondary-button:hover {
+    background: #24583f;
+    transform: translateY(-1px);
+}
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 950px) {
+
+    .compare-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .pros-cons {
+        grid-template-columns: 1fr;
+    }
+
+    .compare-title {
+        font-size: 42px;
+    }
+}
+
+@media (max-width: 600px) {
+
+    .compare-title {
+        font-size: 34px;
+    }
+
+    .compare-controls {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .compare-controls select,
+    .compare-controls button {
+        width: 100%;
+    }
+
+    .compare-column {
+        padding: 18px;
+    }
+
+    .column-image {
+        height: 200px;
+    }
+}
 /*==============================
         LOADING STATE
 ===============================*/
