@@ -1261,10 +1261,12 @@ select.input {
     padding: var(--space-xl);
 }
 
-.commute-timeline h2 {
+.commute-timeline h2,
+.commute-timeline h3 {
     font-size: var(--text-body);
     font-weight: var(--weight-semibold);
     color: var(--color-black);
+    margin: 0;
 }
 
 .commute-total-time {
@@ -1292,11 +1294,11 @@ select.input {
 .route-timeline::before {
     content: '';
     position: absolute;
-    left: 7px;
-    top: 10px;
-    bottom: 10px;
+    left: 8px;
+    top: 12px;
+    bottom: 12px;
     width: 2px;
-    background-color: var(--color-borders);
+    background-color: #d0d0d0;
 }
 
 .route-timeline li {
@@ -1310,29 +1312,28 @@ select.input {
 .route-timeline li::before {
     content: '';
     position: absolute;
-    left: -14px;
-    top: 10px;
-    width: 10px;
-    height: 10px;
+    left: -15px;
+    top: 9px;
+    width: 14px;
+    height: 14px;
     border-radius: var(--radius-full);
-    background-color: var(--color-primary);   /* standard = gange (grønn) */
-    border: 2px solid var(--color-white);
+    background-color: var(--color-primary);
+    border: 2px solid #f5f5f5;
     outline: 2px solid var(--color-primary);
     z-index: 1;
 }
 
 /* Farget sirkel per transportmodus */
 .route-timeline li[data-type="bus"]::before {
-    background-color: var(--color-secondary-dark-60);  /* lilla */
-    outline-color: var(--color-secondary-dark-60);
+    background-color: #A284B7;
+    outline-color: #A284B7;
 }
 .route-timeline li[data-type="tram"]::before {
-    background-color: var(--color-secondary-dark-60);  /* lilla */
-    outline-color: var(--color-secondary-dark-60);
+    background-color: #A284B7;
+    outline-color: #A284B7;
 }
 .route-timeline li[data-type="transfer"]::before {
-    background-color: var(--color-muted-grey);         /* grå */
-    outline-color: var(--color-muted-grey);
+    display: none;
 }
 
 /* Emoji-ikon foran teksten */
