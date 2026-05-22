@@ -193,6 +193,14 @@ ul {
     position: relative;
     min-height: 90vh;
 
+    width: 100%;
+    margin: 0;
+
+    background-image: url("images/hero-bergen.png");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -935,9 +943,9 @@ select.input {
 
 /* Main layout */
 #main-content {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 50px 24px;
+    width: 100%;
+    margin: 0;
+    padding: 0;
 }
 
 /* =========================================================
