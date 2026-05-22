@@ -1725,25 +1725,30 @@ select.input {
     overflow: hidden;
 }
 
-/* =========================================================
-   AI BOX
-========================================================= */
-
-.ai-explanation {
-    background: #f8f8f8;
-    border-radius: 22px;
-    padding: 22px;
+.cc-bar-fill {
+    width: 100%;
+    border-radius: 8px 8px 0 0;
+    transition: height 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
-.ai-explanation h2 {
-    margin-top: 0;
-    font-size: 24px;
-    margin-bottom: 14px;
+.cc-bar-fill--cost {
+    background-color: #A284B7;
 }
 
-.ai-explanation p {
-    line-height: 1.7;
-    color: #444;
+.cc-bar-fill--time {
+    background-color: #4DB88A;
+}
+
+.cc-bar-name {
+    font-size: var(--text-body-s);
+    color: var(--color-muted-grey);
+}
+
+.cc-bar-value {
+    font-size: var(--text-body-s);
+    font-weight: var(--weight-semibold);
+    color: var(--color-black);
+    text-align: center;
 }
 
 /* =========================================================
