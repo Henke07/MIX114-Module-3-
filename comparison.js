@@ -101,9 +101,147 @@ document.addEventListener("DOMContentLoaded", () => {
                             <span class="route-icon">📍</span> Arbeidssted
                         </li>
                     </ul>
-                </div>
-            </section>
+                </section>
+                ` : ""}
 
-        </article>
-    `).join("");
+                <section class="pros-cons">
+                    <div class="pros">
+                        <h3>Fordeler</h3>
+                        <ul>
+                            ${area.pros.map(p => `<li>${p}</li>`).join("")}
+                        </ul>
+                    </div>
+                    <div class="cons">
+                        <h3>Ulemper</h3>
+                        <ul>
+                            ${area.cons.map(c => `<li>${c}</li>`).join("")}
+                        </ul>
+                    </div>
+                </section>
+
+            </div>
+
+        </article>`;
+
+    }).join("");
+
+    /* ==============================
+       HIGHCHARTS RADAR-CHART
+    ============================== */
+
+    const hasRawData = areas.some(a => a.rawData);
+
+    if (hasRawData) {
+        renderRadarChart(areas);
+    } else {
+        renderScoreChart(areas);
+    }
 });
+
+/* ==============================
+   HJELPEFUNKSJONER
+============================== */
+
+function estimateCommute(rd) {
+
+    const centrality = rd.commuteCityCenter ?? 5;
+    const transport  = rd.transport ?? 5;
+
+    // totalMin: 5 min (sentralt/god transport) → 35 min (periferi/dårlig transport)
+    const totalMin = Math.max(8, Math.min(35, Math.round(35 - (centrality * 3))));
+
+    const busInterval  = transport >= 8 ? 10 : transport >= 6 ? 15 : 20;
+    const walkToStop   = Math.max(2, Math.round(10 - transport));
+    const busTime      = Math.max(3, totalMin - walkToStop - 3);
+    const walkToWork   = 3;
+
+    return { totalMin, busInterval, walkToStop, busTime, walkToWork };
+}
+
+function formatPrice(value) {
+    if (!value) return "—";
+    if (value >= 1_000_000) {
+        return (value / 1_000_000).toFixed(1).replace(".", ",") + "M NOK";
+    }
+    return value.toLocaleString("nb-NO") + " NOK";
+}
+
+/* ==============================
+   CHARTS
+============================== */
+
+function renderRadarChart(areas) {
+
+    Highcharts.chart("comparison-chart", {
+        chart: {
+            polar: true,
+            type: "area",
+            backgroundColor: "transparent",
+            style: { fontFamily: "Inter, sans-serif" }
+        },
+        title: { text: null },
+        pane: { size: "72%" },
+        xAxis: {
+            categories: ["Kollektiv", "Skole", "Butikk", "Barnehage", "Apotek", "Pris"],
+            tickmarkPlacement: "on",
+            lineWidth: 0,
+            labels: { style: { fontSize: "13px" } }
+        },
+        yAxis: {
+            gridLineInterpolation: "polygon",
+            lineWidth: 0,
+            min: 0,
+            max: 10,
+            labels: { enabled: false }
+        },
+        tooltip: {
+            shared: true,
+            pointFormat: "<span style='color:{series.color}'>{series.name}: <b>{point.y}/10</b><br/>"
+        },
+        legend: {
+            align: "center",
+            verticalAlign: "bottom",
+            itemStyle: { fontFamily: "Inter, sans-serif", fontWeight: "500" }
+        },
+        series: areas.map(area => ({
+            name: area.name,
+            data: [
+                area.rawData.transport,
+                area.rawData.school,
+                area.rawData.shop,
+                area.rawData.kindergarten,
+                area.rawData.pharmacy,
+                10 - area.rawData.price
+            ],
+            pointPlacement: "on",
+            fillOpacity: 0.2
+        })),
+        colors: ["#2F6B4F", "#C9A9E0"],
+        credits: { enabled: false }
+    });
+}
+
+function renderScoreChart(areas) {
+
+    Highcharts.chart("comparison-chart", {
+        chart: {
+            type: "column",
+            backgroundColor: "transparent",
+            style: { fontFamily: "Inter, sans-serif" }
+        },
+        title: { text: null },
+        xAxis: { categories: areas.map(a => a.name) },
+        yAxis: {
+            min: 0,
+            max: 100,
+            title: { text: "Match-score (%)" }
+        },
+        series: [{
+            name: "Match-score",
+            data: areas.map(a => a.score),
+            color: "#2F6B4F",
+            borderRadius: 6
+        }],
+        credits: { enabled: false }
+    });
+}
