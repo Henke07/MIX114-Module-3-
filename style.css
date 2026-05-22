@@ -1829,21 +1829,34 @@ select.input {
     white-space: nowrap;
 }
 
-.pros h3,
 .cons h3 {
-    margin-top: 0;
-    margin-bottom: 16px;
+    font-size: var(--text-body-s);
+    font-weight: var(--weight-semibold);
+    color: var(--color-muted-grey);
+    border-left: 3px solid var(--color-borders);
+    padding-left: 8px;
+    margin: 0 0 var(--space-xs) 0;
+    display: inline-block;
+    white-space: nowrap;
 }
 
 .pros ul,
 .cons ul {
-    padding-left: 20px;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xs);
 }
 
 .pros li,
 .cons li {
-    margin-bottom: 10px;
+    position: relative;
+    padding-left: var(--space-lg);
+    font-size: var(--text-body-s);
     line-height: 1.5;
+    margin: 0;
 }
 
 /* =========================================================
