@@ -395,7 +395,6 @@ function showInfo(area, position) {
             <p><strong>Kollektiv:</strong> ${area.data.transport}/10</p>
             <p><strong>Skole:</strong> ${area.data.school}/10</p>
             <p><strong>Matbutikk:</strong> ${area.data.shop}/10</p>
-            <p><strong>Match:</strong> ${calculateScore(area, activeFilters)}%</p>
 
             <br>
 
