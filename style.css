@@ -1684,34 +1684,45 @@ select.input {
 }
 
 /* =========================================================
-   CHART SECTION
+   KOSTNAD VS. REISETID — mini bar chart
 ========================================================= */
 
-.chart-title {
-    font-size: 22px;
-    margin-bottom: 16px;
-    color: #111;
+.section-label {
+    font-size: var(--text-body-s);
+    font-weight: var(--weight-semibold);
+    color: var(--color-muted-grey);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-bottom: var(--space-md);
 }
 
-.chart {
-    background: #f7f7f7;
-    border-radius: 20px;
-    min-height: 260px;
-    padding: 16px;
-}
-
-.chart-values {
-    list-style: none;
-    padding: 0;
-    margin-top: 20px;
-}
-
-.chart-values li {
+.cc-chart {
     display: flex;
-    justify-content: space-between;
-    padding: 12px 0;
-    border-bottom: 1px solid #ececec;
-    font-size: 16px;
+    gap: 48px;
+    align-items: flex-end;
+    height: 130px;
+    justify-content: center;
+    padding-bottom: var(--space-xs);
+    border-bottom: 2px solid var(--color-borders);
+}
+
+.cc-bar-group {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-sm);
+    height: 100%;
+    justify-content: flex-end;
+}
+
+.cc-bar-track {
+    width: 64px;
+    height: 100px;
+    background-color: #f0f0f0;
+    border-radius: 8px 8px 0 0;
+    display: flex;
+    align-items: flex-end;
+    overflow: hidden;
 }
 
 /* =========================================================
