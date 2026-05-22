@@ -1859,73 +1859,43 @@ select.input {
     margin: 0;
 }
 
-/* =========================================================
-   AI RECOMMENDATION
-========================================================= */
-
-.ai-recommendation {
-    background: white;
-    border-radius: 30px;
-    padding: 32px;
-    margin-bottom: 50px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+.pros li::before {
+    content: "✓";
+    position: absolute;
+    left: 0;
+    font-weight: var(--weight-bold);
+    color: var(--color-success);
 }
 
-.ai-recommendation h2 {
-    font-size: 34px;
-    margin-top: 0;
-    margin-bottom: 18px;
-}
-
-.ai-recommendation p {
-    line-height: 1.7;
-    font-size: 17px;
-    color: #444;
+.cons li::before {
+    content: "✕";
+    position: absolute;
+    left: 0;
+    font-weight: var(--weight-bold);
+    color: var(--color-error);
 }
 
 /* =========================================================
-   MAIN CHART
+   COMPARISON CHART SECTION
 ========================================================= */
 
-.main-comparison-chart {
-    max-width: 1200px;
-    margin: 0 auto 60px;
-    padding: 0 24px;
+.comparison-chart-section {
+    margin-bottom: var(--space-4xl);
+}
+
+.comparison-chart-title {
+    font-size: var(--text-h3);
+    font-weight: var(--weight-bold);
+    margin-bottom: var(--space-xl);
+    color: var(--color-black);
 }
 
 #comparison-chart {
-    background: white;
-    border-radius: 30px;
-    padding: 30px;
+    background-color: var(--color-white);
+    border-radius: var(--radius-xl);
+    padding: var(--space-2xl);
     min-height: 420px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
-}
-
-/* =========================================================
-   CTA BUTTON
-========================================================= */
-
-.home-cta-wrapper {
-    text-align: center;
-    margin-bottom: 60px;
-}
-
-.secondary-button {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    padding: 16px 30px;
-    border-radius: 999px;
-    background: #2d7050;
-    color: white;
-    text-decoration: none;
-    font-weight: 700;
-    transition: 0.2s ease;
-}
-
-.secondary-button:hover {
-    background: #24583f;
-    transform: translateY(-1px);
+    box-shadow: var(--shadow);
 }
 
 /* =========================================================
@@ -1938,36 +1908,23 @@ select.input {
         grid-template-columns: 1fr;
     }
 
-    .pros-cons {
-        grid-template-columns: 1fr;
-    }
-
-    .compare-title {
-        font-size: 42px;
+    .ai-recommendation-content {
+        flex-direction: column;
+        align-items: flex-start;
     }
 }
 
 @media (max-width: 600px) {
 
-    .compare-title {
-        font-size: 34px;
+    .comparison-page #main-content {
+        padding: var(--space-xl) var(--space-lg);
     }
 
-    .compare-controls {
-        flex-direction: column;
-        align-items: stretch;
+    .pros-cons {
+        grid-template-columns: 1fr;
     }
 
-    .compare-controls select,
-    .compare-controls button {
-        width: 100%;
-    }
-
-    .compare-column {
-        padding: 18px;
-    }
-
-    .column-image {
-        height: 200px;
+    .column-image-wrapper {
+        height: 180px;
     }
 }
