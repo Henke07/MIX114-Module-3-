@@ -34,17 +34,26 @@
             </a>
         </nav>
 
-        <header class="compare-header">
-            <h1 class="compare-title">Sammenlign områder</h1>
-        </header>
+        <h1 class="compare-page-title">Sammenlign Områder</h1>
 
-        <section class="compare-grid" id="compare-grid">
-            <!-- Filled dynamically by comparison.js -->
-        </section>
+        <div id="compare-grid" class="compare-grid"></div>
 
         <section class="comparison-chart-section" aria-label="Sammenligningsgraf">
             <h2 class="comparison-chart-title">Områdesammenligning</h2>
             <div id="comparison-chart"></div>
+        </section>
+
+        <!-- AI ANBEFALING (bunnen) -->
+        <section class="ai-recommendation">
+            <div class="ai-recommendation-content">
+                <span class="ai-recommendation-icon">✦</span>
+                <div class="ai-recommendation-text">
+                    <p class="ai-recommendation-label">AI Anbefaler</p>
+                    <h2 class="ai-recommendation-title" id="ai-winner">—</h2>
+                    <p class="ai-recommendation-desc" id="ai-reason">Søk etter et arbeidssted for å få en anbefaling.</p>
+                </div>
+            </div>
+            <a href="index.html" class="btn btn--secondary btn--lg">← Tilbake til forsiden</a>
         </section>
 
     </main>
@@ -63,6 +72,7 @@
         </div>
     </footer>
 
+    <script src="config.js"></script>
     <script src="comparison.js"></script>
 
 </body>

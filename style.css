@@ -97,6 +97,12 @@ body {
     color: var(--color-black);
 }
 
+ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
 /*==============================
         LAYOUT (Header)
 ===============================*/
@@ -185,26 +191,16 @@ body {
 
 .hero {
     position: relative;
-
-    min-height: 100vh;
+    min-height: 90vh;
 
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
 
-    gap: var(--space-3xl);
+    gap: var(--space-4xl);
 
-    padding: 80px var(--space-2xl);
-
-    background-image:
-        linear-gradient(rgba(0,0,0,0.35),
-        rgba(0,0,0,0.35)),
-        url("images/hero-bergen.png");
-
-    background-size: cover;
-    background-position: center 20%;
-    background-repeat: no-repeat;
+    padding: 90px var(--space-2xl) 80px;
 }
 
 .hero-content {
@@ -264,10 +260,10 @@ body {
 }
 
 .match-image {
-    width: 120px;
-    height: 80px;
+    width: 180px;
+    height: 120px;
     object-fit: cover;
-    border-radius: var(--radius-lg);
+    border-radius: var(--radius-xl);
 }
 
 .match-image-caption {
@@ -300,7 +296,7 @@ body {
 
 .scroll-text {
     position: absolute;
-    bottom: 48px;
+    bottom: 40px;
     left: 50%;
     transform: translateX(-50%);
     display: flex;
@@ -674,7 +670,7 @@ select.input {
     display: flex;
     flex-direction: column;
     align-items: center;
-    text-align: center;
+    text-align: left;
     gap: var(--space-xl);
 }
 .best-matches-header{
@@ -695,7 +691,11 @@ select.input {
 
 .best-matches-card-img {
     width: 200px;
+    min-height: 200px;
     flex-shrink: 0;
+    align-self: stretch;
+    background: linear-gradient(135deg, #2F6B4F 0%, #4DB88A 100%);
+    overflow: hidden;
 }
 
 .best-matches-card-img img {
@@ -849,7 +849,7 @@ select.input {
 .attributes-pros-list,
 .attributes-cons-list {
     list-style: disc;
-    padding-left: var(--space-lg);
+    padding-left: var(--space-md);
     display: flex;
     flex-direction: column;
     align-items: flex-start;
@@ -924,83 +924,397 @@ select.input {
     line-height: 1.6;
 }
 
-/*==============================
-        COMPARISON PAGE
-===============================*/
+/* =========================================================
+   COMPARISON PAGE
+========================================================= */
 
-.compare-header {
-    padding: var(--space-3xl) var(--space-2xl) var(--space-xl);
+.comparison-page {
+    background-color: #f5f3ef;
+    min-height: 100vh;
+}
+
+/* Main layout */
+#main-content {
     max-width: 1200px;
     margin: 0 auto;
+    padding: 50px 24px;
 }
 
-.compare-title {
-    font-size: var(--text-h2);
-    font-weight: var(--weight-bold);
-}
+/* =========================================================
+   BACK BUTTON
+========================================================= */
 
 .back-nav {
-    padding: var(--space-xl) var(--space-2xl) 0;
-    max-width: 1200px;
-    margin: 0 auto;
+    margin-bottom: 32px;
 }
 
 .back-link {
     display: inline-flex;
     align-items: center;
-    gap: var(--space-sm);
+    gap: 8px;
     text-decoration: none;
-    color: var(--color-primary);
-    font-weight: var(--weight-semibold);
+    color: #2d7050;
+    font-weight: 700;
+    font-size: 18px;
+    transition: 0.2s ease;
 }
+
+.back-link:hover {
+    opacity: 0.8;
+}
+
+/* =========================================================
+   PAGE TITLE
+========================================================= */
+
+.compare-header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.compare-title {
+    font-size: 56px;
+    font-weight: 800;
+    color: #111;
+    margin: 0;
+}
+
+/* =========================================================
+   SELECT CONTROLS
+========================================================= */
+
+.compare-controls {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin-bottom: 50px;
+}
+
+.compare-controls select {
+    padding: 14px 18px;
+    border-radius: 16px;
+    border: 2px solid #2d7050;
+    background: white;
+    font-size: 16px;
+    min-width: 200px;
+    outline: none;
+}
+
+.compare-controls button {
+    padding: 14px 22px;
+    border-radius: 16px;
+    border: none;
+    background: #2d7050;
+    color: white;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.compare-controls button:hover {
+    background: #24583f;
+    transform: translateY(-1px);
+}
+
+/* =========================================================
+   COMPARISON GRID
+========================================================= */
 
 .compare-grid {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: var(--space-2xl);
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: var(--space-xl) var(--space-2xl) var(--space-4xl);
+    grid-template-columns: repeat(2, 1fr);
+    gap: 32px;
+    margin-bottom: 50px;
 }
+
+/* =========================================================
+   CARD
+========================================================= */
 
 .compare-column {
-    background-color: var(--color-white);
-    border-radius: var(--radius-xl);
-    box-shadow: var(--shadow);
-    padding: var(--space-2xl);
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-xl);
+    background: white;
+    border-radius: 30px;
+    padding: 24px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
 }
 
-.column-header {
-    display: flex;
+/* =========================================================
+   IMAGE
+========================================================= */
+
+.column-image-wrapper {
+    position: relative;
+}
+
+.column-image {
+    width: 100%;
+    height: 240px;
+    object-fit: cover;
+    border-radius: 22px;
+}
+
+.column-image-title {
+    font-size: 30px;
+    font-weight: 800;
+    margin-top: 16px;
+    color: #111;
+}
+
+/* =========================================================
+   MATCH BADGE
+========================================================= */
+
+.match-badge {
+    display: inline-flex;
     align-items: center;
+    justify-content: center;
+    margin-top: 14px;
+    padding: 10px 16px;
+    border-radius: 999px;
+    background: #dff5e7;
+    color: #2d7050;
+    font-weight: 700;
+    font-size: 15px;
+}
+
+/* =========================================================
+   SECTIONS
+========================================================= */
+
+.chart-section,
+.ai-explanation,
+.commute-timeline,
+.pros-cons {
+    margin-top: 32px;
+}
+
+/* =========================================================
+   CHART SECTION
+========================================================= */
+
+.chart-title {
+    font-size: 22px;
+    margin-bottom: 16px;
+    color: #111;
+}
+
+.chart {
+    background: #f7f7f7;
+    border-radius: 20px;
+    min-height: 260px;
+    padding: 16px;
+}
+
+.chart-values {
+    list-style: none;
+    padding: 0;
+    margin-top: 20px;
+}
+
+.chart-values li {
+    display: flex;
     justify-content: space-between;
+    padding: 12px 0;
+    border-bottom: 1px solid #ececec;
+    font-size: 16px;
 }
 
-.column-header h2 {
-    font-size: var(--text-h3);
-    font-weight: var(--weight-bold);
+/* =========================================================
+   AI BOX
+========================================================= */
+
+.ai-explanation {
+    background: #f8f8f8;
+    border-radius: 22px;
+    padding: 22px;
 }
 
-.ai-explanation h3 {
-    font-size: var(--text-body);
-    font-weight: var(--weight-semibold);
-    color: var(--color-secondary-dark-70);
-    margin-bottom: var(--space-sm);
+.ai-explanation h2 {
+    margin-top: 0;
+    font-size: 24px;
+    margin-bottom: 14px;
 }
+
+.ai-explanation p {
+    line-height: 1.7;
+    color: #444;
+}
+
+/* =========================================================
+   COMMUTE SECTION
+========================================================= */
+
+.commute-timeline h2 {
+    margin-bottom: 16px;
+}
+
+.commute-total-time {
+    display: inline-block;
+    background: #eef8f1;
+    color: #2d7050;
+    padding: 10px 16px;
+    border-radius: 999px;
+    font-weight: 700;
+    margin-bottom: 20px;
+}
+
+.route-timeline {
+    padding-left: 20px;
+}
+
+.route-timeline li {
+    margin-bottom: 12px;
+    line-height: 1.5;
+}
+
+/* =========================================================
+   PROS / CONS
+========================================================= */
 
 .pros-cons {
-    display: flex;
-    gap: var(--space-xl);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
 }
 
-.pros-cons .pros,
-.pros-cons .cons {
-    flex: 1;
+.pros,
+.cons {
+    background: #f8f8f8;
+    padding: 22px;
+    border-radius: 20px;
 }
 
+.pros h3,
+.cons h3 {
+    margin-top: 0;
+    margin-bottom: 16px;
+}
+
+.pros ul,
+.cons ul {
+    padding-left: 20px;
+}
+
+.pros li,
+.cons li {
+    margin-bottom: 10px;
+    line-height: 1.5;
+}
+
+/* =========================================================
+   AI RECOMMENDATION
+========================================================= */
+
+.ai-recommendation {
+    background: white;
+    border-radius: 30px;
+    padding: 32px;
+    margin-bottom: 50px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+}
+
+.ai-recommendation h2 {
+    font-size: 34px;
+    margin-top: 0;
+    margin-bottom: 18px;
+}
+
+.ai-recommendation p {
+    line-height: 1.7;
+    font-size: 17px;
+    color: #444;
+}
+
+/* =========================================================
+   MAIN CHART
+========================================================= */
+
+.main-comparison-chart {
+    max-width: 1200px;
+    margin: 0 auto 60px;
+    padding: 0 24px;
+}
+
+#comparison-chart {
+    background: white;
+    border-radius: 30px;
+    padding: 30px;
+    min-height: 420px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+}
+
+/* =========================================================
+   CTA BUTTON
+========================================================= */
+
+.home-cta-wrapper {
+    text-align: center;
+    margin-bottom: 60px;
+}
+
+.secondary-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px 30px;
+    border-radius: 999px;
+    background: #2d7050;
+    color: white;
+    text-decoration: none;
+    font-weight: 700;
+    transition: 0.2s ease;
+}
+
+.secondary-button:hover {
+    background: #24583f;
+    transform: translateY(-1px);
+}
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 950px) {
+
+    .compare-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .pros-cons {
+        grid-template-columns: 1fr;
+    }
+
+    .compare-title {
+        font-size: 42px;
+    }
+}
+
+@media (max-width: 600px) {
+
+    .compare-title {
+        font-size: 34px;
+    }
+
+    .compare-controls {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .compare-controls select,
+    .compare-controls button {
+        width: 100%;
+    }
+
+    .compare-column {
+        padding: 18px;
+    }
+
+    .column-image {
+        height: 200px;
+    }
+}
 /*==============================
         LOADING STATE
 ===============================*/
@@ -1029,6 +1343,465 @@ select.input {
 }
 
 /*==============================
+        COMPARISON CONTROLS
+===============================*/
+
+.compare-controls {
+    display: flex;
+    align-items: center;
+    gap: var(--space-lg);
+    padding: 0 var(--space-2xl) var(--space-xl);
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.compare-controls select {
+    flex: 1;
+    padding: var(--space-md) var(--space-4xl) var(--space-md) var(--space-lg);
+    border: 1.5px solid var(--color-primary-light-50);
+    border-radius: var(--radius-regular);
+    font-family: var(--font-body);
+    font-size: var(--text-body);
+    background-color: var(--color-white);
+    color: var(--color-black);
+    cursor: pointer;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%232F6B4F' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right var(--space-lg) center;
+    outline: none;
+}
+
+.compare-controls select:focus {
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px var(--color-primary-light-20);
+}
+
+#compare-btn {
+    font-family: var(--font-body);
+    font-size: var(--text-body);
+    font-weight: var(--weight-semibold);
+    background-color: var(--color-primary);
+    color: var(--color-white);
+    border: none;
+    border-radius: var(--radius-regular);
+    padding: var(--space-md) var(--space-xl);
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background-color 0.15s ease;
+}
+
+#compare-btn:hover {
+    background-color: var(--color-primary-light-50);
+}
+
+/*==============================
+        COMPARISON COLUMN HEADER
+===============================*/
+
+.compare-column .column-header {
+    position: relative;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+    justify-content: flex-start;
+}
+
+.column-image-wrapper {
+    position: relative;
+    width: 100%;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    aspect-ratio: 16 / 9;
+    background-color: var(--color-borders);
+}
+
+.column-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.column-image-title {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: var(--space-2xl) var(--space-md) var(--space-md);
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.65), transparent);
+    color: var(--color-white);
+    font-size: var(--text-h4);
+    font-weight: var(--weight-bold);
+}
+
+.column-image-wrapper .match-badge {
+    position: absolute;
+    top: var(--space-md);
+    right: var(--space-md);
+    background-color: var(--color-primary);
+    color: var(--color-white);
+    border-radius: var(--radius-full);
+    padding: var(--space-xs) var(--space-md);
+    font-size: var(--text-body-s);
+    font-weight: var(--weight-bold);
+    z-index: 2;
+}
+
+/*==============================
+        COMPARISON CHART SECTION
+===============================*/
+
+.comparison-chart-section {
+    margin-bottom: var(--space-4xl);
+}
+
+.comparison-chart-title {
+    font-size: var(--text-h3);
+    font-weight: var(--weight-bold);
+    margin-bottom: var(--space-xl);
+}
+
+/*==============================
+        CHART SECTION
+===============================*/
+
+.chart-section {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+    background-color: var(--color-primary-light-10);
+    border-radius: var(--radius-lg);
+    padding: var(--space-xl);
+}
+
+.chart-title {
+    font-size: var(--text-body);
+    font-weight: var(--weight-semibold);
+    color: var(--color-black);
+}
+
+.chart {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);       /* mer luft mellom tykkere søyler */
+}
+
+.chart-bar-row {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+}
+
+.chart-bar-label {
+    font-size: var(--text-body-s);
+    font-weight: var(--weight-medium);  /* litt tykkere tekst, lettere å lese */
+    color: var(--color-muted-grey);
+    width: 72px;
+    flex-shrink: 0;
+}
+
+.chart-bar-track {
+    flex: 1;
+    height: 20px;               /* opp fra 10px — dobbelt så tykk */
+    background-color: var(--color-borders);
+    border-radius: var(--radius-full);
+    overflow: hidden;
+}
+
+.chart-bar-fill {
+    height: 100%;
+    background-color: var(--color-primary);   /* standard-farge (grønn) */
+    border-radius: var(--radius-full);
+    transition: width 0.4s ease;
+}
+
+/* Kostnad → lilla */
+.chart-bar-fill--cost {
+    background-color: var(--color-secondary-dark-60);
+}
+
+/* Reisetid → grønn */
+.chart-bar-fill--time {
+    background-color: var(--color-primary);
+}
+
+.chart-values {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xs);
+    border-top: 1px solid var(--color-borders);
+    padding-top: var(--space-md);
+}
+
+.chart-values li {
+    display: flex;
+    justify-content: space-between;
+    font-size: var(--text-body-s);
+    color: var(--color-muted-grey);
+}
+
+.chart-values li span:last-child {
+    font-weight: var(--weight-semibold);
+    color: var(--color-black);
+}
+
+/*==============================
+        AI EXPLANATION
+===============================*/
+
+.ai-explanation {
+    background-color: var(--color-primary-light-10);
+    border: 1px solid var(--color-primary-light-30);
+    border-radius: var(--radius-lg);
+    padding: var(--space-xl);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+}
+
+.ai-explanation h2 {
+    font-size: var(--text-body);
+    font-weight: var(--weight-semibold);
+    color: var(--color-primary);
+}
+
+.ai-explanation p {
+    font-size: var(--text-body);
+    color: var(--color-black);
+    line-height: 1.6;
+}
+
+/*==============================
+        COMMUTE TIMELINE
+===============================*/
+
+.commute-timeline {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-lg);
+    background-color: #f5f5f5;
+    border-radius: var(--radius-lg);
+    padding: var(--space-xl);
+}
+
+.commute-timeline h2,
+.commute-timeline h3 {
+    font-size: var(--text-body);
+    font-weight: var(--weight-semibold);
+    color: var(--color-black);
+    margin: 0;
+}
+
+.commute-total-time {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-xs);
+    background-color: var(--color-primary-light-20);
+    color: var(--color-primary);
+    border-radius: var(--radius-full);
+    padding: var(--space-xs) var(--space-md);
+    font-size: var(--text-body-s);
+    font-weight: var(--weight-semibold);
+    align-self: flex-start;
+}
+
+.route-timeline {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    padding-left: var(--space-xl);
+    position: relative;
+}
+
+.route-timeline::before {
+    content: '';
+    position: absolute;
+    left: 8px;
+    top: 12px;
+    bottom: 12px;
+    width: 2px;
+    background-color: #d0d0d0;
+}
+
+.route-timeline li {
+    position: relative;
+    padding: var(--space-sm) 0 var(--space-sm) var(--space-lg);
+    font-size: var(--text-body-s);
+    color: var(--color-black);
+    line-height: 1.5;
+}
+
+.route-timeline li::before {
+    content: '';
+    position: absolute;
+    left: -15px;
+    top: 9px;
+    width: 14px;
+    height: 14px;
+    border-radius: var(--radius-full);
+    background-color: var(--color-primary);
+    border: 2px solid #f5f5f5;
+    outline: 2px solid var(--color-primary);
+    z-index: 1;
+}
+
+/* Farget sirkel per transportmodus */
+.route-timeline li[data-type="bus"]::before {
+    background-color: #A284B7;
+    outline-color: #A284B7;
+}
+.route-timeline li[data-type="tram"]::before {
+    background-color: #A284B7;
+    outline-color: #A284B7;
+}
+.route-timeline li[data-type="transfer"]::before {
+    display: none;
+}
+
+/* Emoji-ikon foran teksten */
+.route-icon {
+    display: inline-block;
+    width: 1.4em;          /* fast bredde → all tekst starter på linje */
+    text-align: center;
+}
+
+/*==============================
+        PROS / CONS
+===============================*/
+
+.pros-cons .pros h3,
+.pros-cons .cons h3 {
+    font-size: var(--text-body-s);
+    font-weight: var(--weight-semibold);
+    padding-left: var(--space-sm);
+    margin-bottom: var(--space-sm);
+}
+
+.pros-cons .pros h3 {
+    color: var(--color-primary);
+    border-left: 3px solid var(--color-primary);
+}
+
+.pros-cons .cons h3 {
+    color: var(--color-muted-grey);
+    border-left: 3px solid var(--color-borders);
+}
+
+.pros-cons ul {
+    list-style: none;      /* fjerner standard kulepunkter */
+    padding-left: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xs);
+    font-size: var(--text-body-s);
+}
+
+/* Hvert li trenger plass til ikonet til venstre */
+.pros li,
+.cons li {
+    position: relative;
+    padding-left: var(--space-xl);  /* 24px — plass til ✓ / ✕ */
+}
+
+/* Grønt hake for fordeler */
+.pros li::before {
+    content: "✓";
+    position: absolute;
+    left: 0;
+    font-weight: var(--weight-bold);
+    color: var(--color-success);
+}
+
+/* Rødt kryss for ulemper */
+.cons li::before {
+    content: "✕";
+    position: absolute;
+    left: 0;
+    font-weight: var(--weight-bold);
+    color: var(--color-error);
+}
+
+/*==============================
+        AI RECOMMENDATION
+===============================*/
+
+.ai-recommendation {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 var(--space-2xl) var(--space-4xl);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-xl);
+}
+
+.ai-recommendation-content {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2xl);
+    background-color: var(--color-primary);
+    color: var(--color-white);
+    border-radius: var(--radius-xl);
+    padding: var(--space-3xl);
+    width: 100%;
+}
+
+.ai-recommendation-icon {
+    font-size: 3rem;
+    line-height: 1;
+    flex-shrink: 0;
+}
+
+.ai-recommendation-label {
+    font-size: var(--text-body-s);
+    font-weight: var(--weight-semibold);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    opacity: 0.7;
+    margin-bottom: var(--space-xs);
+}
+
+.ai-recommendation-title {
+    font-size: var(--text-h2);
+    font-weight: var(--weight-bold);
+    margin-bottom: var(--space-sm);
+}
+
+.ai-recommendation-desc {
+    font-size: var(--text-body);
+    line-height: 1.6;
+    opacity: 0.9;
+    max-width: 560px;
+}
+
+/* Større knapp-variant brukt under anbefalingen */
+.btn--lg {
+    font-size: var(--text-h5);
+    padding: var(--space-lg) var(--space-3xl);
+}
+
+/*==============================
+        MAIN COMPARISON CHART
+===============================*/
+
+.main-comparison-chart {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 var(--space-2xl) var(--space-4xl);
+}
+
+#comparison-chart {
+    background-color: var(--color-white);
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow);
+    padding: var(--space-2xl);
+    min-height: 200px;
+}
+
+/*==============================
         GOOGLE MAP
 ===============================*/
 
@@ -1042,4 +1815,441 @@ select.input {
     overflow: hidden;
     box-shadow: var(--shadow);
     background-color: #ddd;
+}
+/* =========================================================
+   COMPARISON PAGE
+========================================================= */
+
+.comparison-page {
+    background-color: var(--color-page-bg);
+    min-height: 100vh;
+}
+
+.comparison-page #main-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: var(--space-3xl) var(--space-2xl);
+}
+
+/* =========================================================
+   PAGE TITLE
+========================================================= */
+
+.compare-page-title {
+    font-size: var(--text-h1);
+    font-weight: var(--weight-bold);
+    text-align: center;
+    color: var(--color-black);
+    margin-bottom: var(--space-3xl);
+}
+
+/* =========================================================
+   BACK NAV
+========================================================= */
+
+.back-nav {
+    margin-bottom: var(--space-2xl);
+}
+
+.back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-sm);
+    text-decoration: none;
+    color: var(--color-primary);
+    font-weight: var(--weight-bold);
+    font-size: var(--text-h5);
+    transition: opacity 0.2s ease;
+}
+
+.back-link:hover {
+    opacity: 0.75;
+}
+
+/* =========================================================
+   AI RECOMMENDATION BANNER
+========================================================= */
+
+.ai-recommendation {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-xl);
+    margin-top: var(--space-3xl);
+    margin-bottom: var(--space-3xl);
+    padding: 0;
+    max-width: none;
+}
+
+.ai-recommendation-content {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2xl);
+    background-color: var(--color-primary);
+    border-radius: var(--radius-xl);
+    padding: var(--space-3xl);
+    width: 100%;
+    color: var(--color-white);
+    box-shadow: var(--shadow);
+}
+
+.ai-recommendation-icon {
+    font-size: 3rem;
+    line-height: 1;
+    flex-shrink: 0;
+}
+
+.ai-recommendation-label {
+    font-size: var(--text-body-s);
+    font-weight: var(--weight-semibold);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    opacity: 0.7;
+    margin-bottom: var(--space-xs);
+}
+
+.ai-recommendation-title {
+    font-size: var(--text-h2);
+    font-weight: var(--weight-bold);
+    margin-bottom: var(--space-sm);
+}
+
+.ai-recommendation-desc {
+    font-size: var(--text-body);
+    line-height: 1.6;
+    opacity: 0.9;
+    max-width: 560px;
+}
+
+/* =========================================================
+   COMPARE GRID
+========================================================= */
+
+.compare-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-2xl);
+    margin-bottom: var(--space-3xl);
+    padding: 0;
+    max-width: none;
+}
+
+/* =========================================================
+   COMPARE CARD
+========================================================= */
+
+.compare-column {
+    background-color: var(--color-white);
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+    gap: 0;
+}
+
+/* =========================================================
+   CARD IMAGE HEADER
+========================================================= */
+
+.column-image-wrapper {
+    position: relative;
+    width: 100%;
+    height: 220px;
+    aspect-ratio: auto;
+    border-radius: 0;
+    background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-light-50) 100%);
+    flex-shrink: 0;
+    overflow: hidden;
+}
+
+.column-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.column-image-title {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: var(--space-2xl) var(--space-xl) var(--space-lg);
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.55), transparent);
+    color: var(--color-white);
+    font-size: var(--text-h3);
+    font-weight: var(--weight-bold);
+}
+
+.column-image-wrapper .match-badge {
+    position: absolute;
+    top: var(--space-md);
+    right: var(--space-md);
+    background-color: var(--color-white);
+    color: var(--color-primary);
+    border-radius: var(--radius-full);
+    padding: var(--space-xs) var(--space-md);
+    font-size: var(--text-body-s);
+    font-weight: var(--weight-bold);
+    z-index: 2;
+}
+
+/* =========================================================
+   CARD BODY
+========================================================= */
+
+.compare-column-body {
+    padding: var(--space-xl);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xl);
+    flex: 1;
+}
+
+/* =========================================================
+   KOSTNAD VS. REISETID — mini bar chart
+========================================================= */
+
+.section-label {
+    font-size: var(--text-body-s);
+    font-weight: var(--weight-semibold);
+    color: var(--color-muted-grey);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-bottom: var(--space-md);
+}
+
+.cc-chart {
+    display: flex;
+    gap: 48px;
+    align-items: flex-end;
+    height: 130px;
+    justify-content: center;
+    padding-bottom: var(--space-xs);
+    border-bottom: 2px solid var(--color-borders);
+}
+
+.cc-bar-group {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-sm);
+    height: 100%;
+    justify-content: flex-end;
+}
+
+.cc-bar-track {
+    width: 64px;
+    height: 100px;
+    background-color: #f0f0f0;
+    border-radius: 8px 8px 0 0;
+    display: flex;
+    align-items: flex-end;
+    overflow: hidden;
+}
+
+.cc-bar-fill {
+    width: 100%;
+    border-radius: 8px 8px 0 0;
+    transition: height 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.cc-bar-fill--cost {
+    background-color: #A284B7;
+}
+
+.cc-bar-fill--time {
+    background-color: #4DB88A;
+}
+
+.cc-bar-name {
+    font-size: var(--text-body-s);
+    color: var(--color-muted-grey);
+}
+
+.cc-bar-value {
+    font-size: var(--text-body-s);
+    font-weight: var(--weight-semibold);
+    color: var(--color-black);
+    text-align: center;
+}
+
+/* =========================================================
+   EMPTY STATE
+========================================================= */
+
+.empty-state {
+    text-align: center;
+    padding: var(--space-4xl) var(--space-2xl);
+    color: var(--color-muted-grey);
+    grid-column: 1 / -1;
+}
+
+.empty-state a {
+    color: var(--color-primary);
+    font-weight: var(--weight-semibold);
+    text-decoration: none;
+}
+
+/* =========================================================
+   AI EXPLANATION BOX
+========================================================= */
+
+.ai-explanation {
+    background-color: var(--color-primary-light-10);
+    border: 1px solid var(--color-primary-light-30);
+    border-radius: var(--radius-lg);
+    padding: var(--space-xl);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+    margin-top: 0;
+}
+
+.ai-explanation h2 {
+    font-size: var(--text-body);
+    font-weight: var(--weight-semibold);
+    color: var(--color-primary);
+    margin: 0;
+}
+
+.ai-explanation p {
+    font-size: var(--text-body);
+    color: var(--color-black);
+    line-height: 1.6;
+    margin: 0;
+}
+
+/* =========================================================
+   PROS / CONS
+========================================================= */
+
+.pros-cons {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-lg);
+    margin-top: 0;
+}
+
+.pros,
+.cons {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+    background: none;
+    padding: 0;
+    border-radius: 0;
+}
+
+.pros h3 {
+    font-size: var(--text-body-s);
+    font-weight: var(--weight-semibold);
+    color: var(--color-primary);
+    border-left: 3px solid var(--color-primary);
+    padding-left: 8px;
+    margin: 0 0 var(--space-xs) 0;
+    display: inline-block;
+    white-space: nowrap;
+}
+
+.cons h3 {
+    font-size: var(--text-body-s);
+    font-weight: var(--weight-semibold);
+    color: var(--color-muted-grey);
+    border-left: 3px solid var(--color-borders);
+    padding-left: 8px;
+    margin: 0 0 var(--space-xs) 0;
+    display: inline-block;
+    white-space: nowrap;
+}
+
+.pros ul,
+.cons ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xs);
+}
+
+.pros li,
+.cons li {
+    position: relative;
+    padding-left: var(--space-lg);
+    font-size: var(--text-body-s);
+    line-height: 1.5;
+    margin: 0;
+}
+
+.pros li::before {
+    content: "✓";
+    position: absolute;
+    left: 0;
+    font-weight: var(--weight-bold);
+    color: var(--color-success);
+}
+
+.cons li::before {
+    content: "✕";
+    position: absolute;
+    left: 0;
+    font-weight: var(--weight-bold);
+    color: var(--color-error);
+}
+
+/* =========================================================
+   COMPARISON CHART SECTION
+========================================================= */
+
+.comparison-chart-section {
+    margin-bottom: var(--space-4xl);
+}
+
+.comparison-chart-title {
+    font-size: var(--text-h3);
+    font-weight: var(--weight-bold);
+    margin-bottom: var(--space-xl);
+    color: var(--color-black);
+}
+
+#comparison-chart {
+    background-color: var(--color-white);
+    border-radius: var(--radius-xl);
+    padding: var(--space-2xl);
+    min-height: 420px;
+    box-shadow: var(--shadow);
+}
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 950px) {
+
+    .compare-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .ai-recommendation-content {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}
+
+@media (max-width: 600px) {
+
+    .comparison-page #main-content {
+        padding: var(--space-xl) var(--space-lg);
+    }
+
+    .pros-cons {
+        grid-template-columns: 1fr;
+    }
+
+    .column-image-wrapper {
+        height: 180px;
+    }
 }

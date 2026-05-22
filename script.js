@@ -198,7 +198,7 @@ Svar KUN med et JSON-array i dette formatet, ingen annen tekst:
     "score": 85,
     "pros": ["Fordel 1", "Fordel 2"],
     "cons": ["Ulempe 1"],
-    "summary": "Kort forklaring på norsk som nevner reisetid fra arbeidsstedet"
+    "summary": "2-3 setninger på norsk som beskriver nabolaget, nevner estimert reisetid fra arbeidsstedet og gir en konkret anbefaling om hvem området passer for"
   }
 ]
     `.trim();
@@ -226,7 +226,7 @@ function renderResults(results) {
             <div class="best-matches-card">
 
                 <div class="best-matches-card-img">
-                    <img src="" alt="Bilde av ${area.name}">
+                    <img src="images/${area.name.toLowerCase()}.png" alt="Bilde av ${area.name}" onerror="this.style.display='none'">
                 </div>
 
                 <div class="best-matches-card-content">
@@ -234,7 +234,7 @@ function renderResults(results) {
                         <h3>${area.name}</h3>
                     </div>
 
-                    <p>${area.summary}</p>
+                    <p>${area.summary.match(/^[^.!?]+[.!?]/)?.[0] ?? area.summary}</p>
 
                     <div class="card-content-attriubutes">
                         <div class="attributes-pros">
@@ -395,7 +395,6 @@ function showInfo(area, position) {
             <p><strong>Kollektiv:</strong> ${area.data.transport}/10</p>
             <p><strong>Skole:</strong> ${area.data.school}/10</p>
             <p><strong>Matbutikk:</strong> ${area.data.shop}/10</p>
-            <p><strong>Match:</strong> ${calculateScore(area, activeFilters)}%</p>
 
             <br>
 
@@ -447,7 +446,9 @@ function addToComparison(area, btn) {
             alert("Du kan bare sammenligne 2 områder. Fjern ett først.");
             return;
         }
-        selectedAreas.push(area);
+        const rawArea = areas.find(a => a.name === area.name);
+        const enriched = rawArea ? { ...area, rawData: rawArea.data, center: rawArea.center } : area;
+        selectedAreas.push(enriched);
         btn.textContent = "−";
         btn.classList.add("card-btn-add--active");
         if (label) label.textContent = "Fjern";
