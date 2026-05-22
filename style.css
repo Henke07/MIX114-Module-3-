@@ -1496,38 +1496,49 @@ select.input {
 ========================================================= */
 
 .comparison-page {
-    background-color: #f5f3ef;
+    background-color: var(--color-page-bg);
     min-height: 100vh;
 }
 
-/* Main layout */
-#main-content {
+.comparison-page #main-content {
     max-width: 1200px;
     margin: 0 auto;
-    padding: 50px 24px;
+    padding: var(--space-3xl) var(--space-2xl);
 }
 
 /* =========================================================
-   BACK BUTTON
+   PAGE TITLE
+========================================================= */
+
+.compare-page-title {
+    font-size: var(--text-h1);
+    font-weight: var(--weight-bold);
+    text-align: center;
+    color: var(--color-black);
+    margin-bottom: var(--space-3xl);
+}
+
+/* =========================================================
+   BACK NAV
 ========================================================= */
 
 .back-nav {
-    margin-bottom: 32px;
+    margin-bottom: var(--space-2xl);
 }
 
 .back-link {
     display: inline-flex;
     align-items: center;
-    gap: 8px;
+    gap: var(--space-sm);
     text-decoration: none;
-    color: #2d7050;
-    font-weight: 700;
-    font-size: 18px;
-    transition: 0.2s ease;
+    color: var(--color-primary);
+    font-weight: var(--weight-bold);
+    font-size: var(--text-h5);
+    transition: opacity 0.2s ease;
 }
 
 .back-link:hover {
-    opacity: 0.8;
+    opacity: 0.75;
 }
 
 /* =========================================================
