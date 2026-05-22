@@ -204,12 +204,22 @@ ul {
 }
 
 .hero-content {
-    max-width: 640px;
+    max-width: 900px;
+
     display: flex;
     flex-direction: column;
     align-items: center;
     text-align: center;
     gap: var(--space-xl);
+
+    background: rgba(255,255,255,0.10);
+    backdrop-filter: blur(6px);
+
+    padding: 48px 56px;
+
+    border-radius: 32px;
+
+    box-shadow: 0 8px 30px rgba(0,0,0,0.18);
 }
 
 .hero-badge {
@@ -225,8 +235,9 @@ ul {
 }
 
 .hero-title {
-    font-size: var(--text-h1);
-    font-weight: var(--weight-bold);
+    color: white;
+    font-size: 72px;
+    font-weight: 800;
     line-height: 1.1;
 }
 
@@ -235,11 +246,11 @@ ul {
 }
 
 .hero-subtitle {
-    font-size: var(--text-h5);
-    font-weight: var(--weight-regular);
-    color: var(--color-muted-grey);
-    line-height: 1.6;
-    max-width: 480px;
+    font-size: 22px;
+    font-weight: 400;
+    color: rgba(255,255,255,0.92);
+    line-height: 1.5;
+    max-width: 520px;
 }
 
 .match-visual {
@@ -292,7 +303,7 @@ ul {
     flex-direction: column;
     align-items: center;
     gap: var(--space-xs);
-    color: var(--color-muted-grey);
+    color:rgba(255,255,255,0.9);
     font-size: var(--text-body-s);
     white-space: nowrap;
 }
