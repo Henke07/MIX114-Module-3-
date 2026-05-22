@@ -1597,25 +1597,31 @@ select.input {
 }
 
 /* =========================================================
-   COMPARISON GRID
+   COMPARE GRID
 ========================================================= */
 
 .compare-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: 32px;
-    margin-bottom: 50px;
+    gap: var(--space-2xl);
+    margin-bottom: var(--space-3xl);
+    padding: 0;
+    max-width: none;
 }
 
 /* =========================================================
-   CARD
+   COMPARE CARD
 ========================================================= */
 
 .compare-column {
-    background: white;
-    border-radius: 30px;
-    padding: 24px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+    background-color: var(--color-white);
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+    gap: 0;
 }
 
 /* =========================================================
