@@ -1,14 +1,40 @@
 document.addEventListener("DOMContentLoaded", () => {
 
     const areas = JSON.parse(localStorage.getItem("comparisonAreas") || "[]");
-    const grid = document.getElementById("compare-grid");
 
     if (areas.length === 0) {
-        grid.innerHTML = "<p>Ingen områder valgt. <a href='map.html'>Gå tilbake og velg områder.</a></p>";
+        document.getElementById("ai-winner").textContent = "Ingen områder valgt";
+        document.getElementById("ai-reason").textContent = "Gå tilbake til kartet og legg til opp til 2 områder.";
+        document.getElementById("compare-grid").innerHTML = `
+            <p class="empty-state">
+                <a href="map.html">← Gå tilbake og velg opp til 2 områder</a>
+            </p>`;
         return;
     }
 
-    grid.innerHTML = areas.map(area => `
+    /* ==============================
+       AI ANBEFALING
+    ============================== */
+
+    const winner = areas.reduce((best, a) => a.score > best.score ? a : best, areas[0]);
+    document.getElementById("ai-winner").textContent = winner.name;
+    document.getElementById("ai-reason").textContent = winner.summary;
+
+    /* ==============================
+       SAMMENLIGN-GRID
+    ============================== */
+
+    document.getElementById("compare-grid").innerHTML = areas.map(area => {
+
+        const rd = area.rawData || null;
+        const commute = rd ? estimateCommute(rd) : null;
+
+        const costBarPct   = rd ? Math.round((rd.price / 10) * 100) : 0;
+        const timeBarPct   = commute ? Math.round((commute.totalMin / 40) * 100) : 0;
+
+        const imgSrc = `images/${area.name.toLowerCase()}.png`;
+
+        return `
         <article class="compare-column">
 
             <header class="column-header">
