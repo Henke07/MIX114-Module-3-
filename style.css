@@ -1658,32 +1658,29 @@ select.input {
     font-weight: var(--weight-bold);
 }
 
-/* =========================================================
-   MATCH BADGE
-========================================================= */
-
-.match-badge {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    margin-top: 14px;
-    padding: 10px 16px;
-    border-radius: 999px;
-    background: #dff5e7;
-    color: #2d7050;
-    font-weight: 700;
-    font-size: 15px;
+.column-image-wrapper .match-badge {
+    position: absolute;
+    top: var(--space-md);
+    right: var(--space-md);
+    background-color: var(--color-white);
+    color: var(--color-primary);
+    border-radius: var(--radius-full);
+    padding: var(--space-xs) var(--space-md);
+    font-size: var(--text-body-s);
+    font-weight: var(--weight-bold);
+    z-index: 2;
 }
 
 /* =========================================================
-   SECTIONS
+   CARD BODY
 ========================================================= */
 
-.chart-section,
-.ai-explanation,
-.commute-timeline,
-.pros-cons {
-    margin-top: 32px;
+.compare-column-body {
+    padding: var(--space-xl);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xl);
+    flex: 1;
 }
 
 /* =========================================================
