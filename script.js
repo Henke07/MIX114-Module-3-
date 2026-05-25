@@ -234,7 +234,7 @@ function renderResults(results) {
                         <h3>${area.name}</h3>
                     </div>
 
-                    <p>${area.summary.match(/^[^.!?]+[.!?]/)?.[0] ?? area.summary}</p>
+                    <p>${area.summary}</p>
 
                     <div class="card-content-attriubutes">
                         <div class="attributes-pros">
